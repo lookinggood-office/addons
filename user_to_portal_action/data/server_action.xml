@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_convert_to_portal" model="ir.actions.server">
+        <field name="name">Switch User to Portal </field>
+        <field name="model_id" ref="base.model_res_users"/>
+        <field name="binding_model_id" ref="base.model_res_users"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+portal_group = env.ref('base.group_portal')
+admin_group = env.ref('base.group_system')
+
+# Process records: Skip ID 1 AND anyone with Admin rights, convert others
+targets = records.filtered(lambda r: r.id != 1 and admin_group not in r.group_ids)
+
+if targets:
+    for record in targets:
+        # Odoo 19: Use 'group_ids' to set the user to Portal group only
+        record.write({'group_ids': [(6, 0, [portal_group.id])]})
+    
+    action = {
+        'type': 'ir.actions.client',
+        'tag': 'display_notification',
+        'params': {
+            'title': 'Success',
+            'message': f'Successfully converted {len(targets)} users to Portal.',
+            'type': 'success',
+            'sticky': False,
+            'next': {'type': 'ir.actions.client', 'tag': 'reload'},
+        }
+    }
+else:
+    # If only Admins were selected, just reload silently
+    action = {'type': 'ir.actions.client', 'tag': 'reload'}
+        </field>
+    </record>
+
+    <!-- Hiding Administrator (ID 1) from non-admins -->
+    <record id="res_users_hide_admin_rule" model="ir.rule">
+        <field name="name">Hide Administrator from non-admins</field>
+        <field name="model_id" ref="base.model_res_users"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">[(1, '=', 1)] if user.id == 1 else [('id', '!=', 1)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+</odoo>

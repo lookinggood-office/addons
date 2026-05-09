@@ -1,0 +1,17 @@
+<svg width="1200" height="600" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="600" fill="#004385"/>
+    <circle cx="1000" cy="100" r="300" fill="#0056B3" fill-opacity="0.5"/>
+    <circle cx="100" cy="500" r="200" fill="#0056B3" fill-opacity="0.3"/>
+    
+    <text x="100" y="280" fill="white" style="font-family: Arial; font-weight: bold; font-size: 80px;">User to Portal</text>
+    <text x="100" y="380" fill="#FFD700" style="font-family: Arial; font-weight: bold; font-size: 110px;">ACTION</text>
+    <text x="100" y="460" fill="white" style="font-family: Arial; font-size: 30px; opacity: 0.8;">Professional User Conversion Tool for Odoo 19</text>
+    
+    <rect x="100" y="500" width="300" height="10" fill="#FFD700" rx="5"/>
+    
+    <g transform="translate(800, 200) scale(1.5)">
+        <rect width="150" height="150" rx="30" fill="white" fill-opacity="0.2"/>
+        <path d="M75 30C60 30 50 40 50 55C50 70 60 80 75 80C90 80 100 70 100 55C100 40 90 30 75 30Z" fill="white"/>
+        <path d="M75 90C55 90 40 105 40 125V130H110V125C110 105 95 90 75 90Z" fill="white" fill-opacity="0.8"/>
+    </g>
+</svg>

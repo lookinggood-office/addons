@@ -1,0 +1,23 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background with premium Blue gradient -->
+    <rect width="256" height="256" rx="55" fill="url(#bg_grad)"/>
+    
+    <!-- Decorative Circle (Portal Ring) -->
+    <circle cx="128" cy="128" r="95" stroke="white" stroke-width="2" stroke-dasharray="10 5" opacity="0.3"/>
+    
+    <!-- User Silhouette -->
+    <path d="M128 70C110.327 70 96 84.3269 96 102C96 119.673 110.327 134 128 134C145.673 134 160 119.673 160 102C160 84.3269 145.673 70 128 70Z" fill="white"/>
+    <path d="M128 146C100.386 146 78 168.386 78 196V205H178V196C178 168.386 155.614 146 128 146Z" fill="white" fill-opacity="0.9"/>
+    
+    <!-- Portal / Web Symbol (Small Globe/Key) -->
+    <circle cx="185" cy="185" r="42" fill="#FFD700" stroke="#002D5A" stroke-width="6"/>
+    <path d="M185 155V215M155 185H215" stroke="#002D5A" stroke-width="3" stroke-linecap="round"/>
+    <ellipse cx="185" cy="185" rx="15" ry="30" stroke="#002D5A" stroke-width="3"/>
+    
+    <defs>
+        <linearGradient id="bg_grad" x1="0" y1="0" x2="256" y2="256" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#0056B3"/>
+            <stop offset="1" stop-color="#002D5A"/>
+        </linearGradient>
+    </defs>
+</svg>
