@@ -1,11 +1,15 @@
 {
-    'name': 'User to Portal Action (Odoo 19)',
-    'summary': 'Bulk convert Internal Users to Portal with admin safety protection',
+    'name': 'PortalSwift',
+    'summary': 'Fast & Secure Bulk User-to-Portal Conversion',
     'description': """
-    Convert Internal Users to Portal Action
-    =======================================
-    Adds a convenient menu item in the User action menu to convert selected internal users to the Portal group.
-    It includes built-in safety checks to skip the main Administrator and any users with Administrative rights.
+    Swift Portalize
+    ===============
+    Professional utility to convert internal users to the Portal group instantly.
+    Features:
+    - One-click bulk conversion from List View
+    - Smart Admin Shield to protect system managers
+    - Native Odoo 19 field support (group_ids)
+    - Zero-config deployment
     """,
     'author': 'LookingGood Co.,Ltd.',
     'website': 'lookinggood.odoo.com',
