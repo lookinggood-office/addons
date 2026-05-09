@@ -14,7 +14,7 @@
     'author': 'LookingGood Co.,Ltd.',
     'website': 'lookinggood.odoo.com',
     'category': 'Extra Tools',
-    'version': '19.0.1.3',
+    'version': '19.0.1.4',
     'depends': ['base'],
     'data': [
         'security/security_data.xml',
