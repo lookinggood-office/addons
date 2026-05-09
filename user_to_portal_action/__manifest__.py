@@ -21,7 +21,6 @@
     ],
     'images': [
         'static/description/banner.svg',
-        'static/description/icon.svg',
     ],
     'installable': True,
     'application': False,
