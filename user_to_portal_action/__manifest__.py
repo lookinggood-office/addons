@@ -17,11 +17,10 @@
     'version': '19.0.1.3',
     'depends': ['base'],
     'data': [
+        'security/security_data.xml',
         'data/server_action.xml',
     ],
-    'images': [
-        'static/description/banner.svg',
-    ],
+    'images': ['static/description/main_screenshot.png'],
     'installable': True,
     'application': False,
     'license': 'LGPL-3',
