@@ -19,7 +19,10 @@
     'data': [
         'data/server_action.xml',
     ],
-    'images': ['static/description/main_screenshot.png'],
+    'images': [
+        'static/description/banner.svg',
+        'static/description/icon.svg',
+    ],
     'installable': True,
     'application': False,
     'license': 'LGPL-3',

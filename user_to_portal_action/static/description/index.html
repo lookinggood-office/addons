@@ -11,7 +11,22 @@
             </div>
         </div>
         <div class="col-md-4 text-right">
-            <img src="icon.png" style="width: 100px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));" alt="Icon">
+            <!-- Embedded Icon SVG -->
+            <svg width="120" height="120" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));">
+                <rect width="256" height="256" rx="55" fill="url(#bg_grad_blue)"/>
+                <circle cx="128" cy="128" r="95" stroke="white" stroke-width="2" stroke-dasharray="10 5" opacity="0.3"/>
+                <path d="M128 70C110.327 70 96 84.3269 96 102C96 119.673 110.327 134 128 134C145.673 134 160 119.673 160 102C160 84.3269 145.673 70 128 70Z" fill="white"/>
+                <path d="M128 146C100.386 146 78 168.386 78 196V205H178V196C178 168.386 155.614 146 128 146Z" fill="white" fill-opacity="0.9"/>
+                <circle cx="185" cy="185" r="42" fill="#FFD700" stroke="#002D5A" stroke-width="6"/>
+                <path d="M185 155V215M155 185H215" stroke="#002D5A" stroke-width="3" stroke-linecap="round"/>
+                <ellipse cx="185" cy="185" rx="15" ry="30" stroke="#002D5A" stroke-width="3"/>
+                <defs>
+                    <linearGradient id="bg_grad_blue" x1="0" y1="0" x2="256" y2="256" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#0056B3"/>
+                        <stop offset="1" stop-color="#002D5A"/>
+                    </linearGradient>
+                </defs>
+            </svg>
         </div>
     </div>
 </section>
@@ -19,7 +34,6 @@
 <!-- Compact Features & How it works -->
 <section class="oe_container" style="padding: 20px 0;">
     <div class="row">
-        <!-- Key Features Column -->
         <div class="col-md-6" style="border-right: 1px solid #eee;">
             <h4 style="color: #004385; font-weight: 700; margin-bottom: 20px;"><i class="fa fa-star mr-2"></i>Key Features</h4>
             <div class="media mb-3">
@@ -44,8 +58,6 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Quick Setup Column -->
         <div class="col-md-6" style="padding-left: 30px;">
             <h4 style="color: #004385; font-weight: 700; margin-bottom: 20px;"><i class="fa fa-rocket mr-2"></i>How it works</h4>
             <ul style="list-style: none; padding-left: 0; font-size: 14px;">
@@ -66,10 +78,24 @@
 <!-- Screenshot Section (Compact) -->
 <section class="oe_container oe_dark" style="padding: 20px; background: #f8f9fa; border-radius: 15px; border: 1px solid #eee;">
     <div class="text-center mb-3">
-        <h5 style="color: #002D5A; font-weight: 700; margin: 0;">Module Screenshot</h5>
+        <h5 style="color: #002D5A; font-weight: 700; margin: 0;">Module Preview</h5>
     </div>
     <div style="box-shadow: 0 5px 20px rgba(0,0,0,0.05); border-radius: 8px; overflow: hidden; border: 1px solid #ddd;">
-        <img src="main_screenshot.png" style="width: 100%; display: block;" alt="App Banner">
+        <!-- Embedded Banner SVG -->
+        <svg width="100%" height="auto" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="1200" height="600" fill="#004385"/>
+            <circle cx="1000" cy="100" r="300" fill="#0056B3" fill-opacity="0.5"/>
+            <circle cx="100" cy="500" r="200" fill="#0056B3" fill-opacity="0.3"/>
+            <text x="100" y="280" fill="white" style="font-family: Arial; font-weight: bold; font-size: 80px;">PortalSwift</text>
+            <text x="100" y="380" fill="#FFD700" style="font-family: Arial; font-weight: bold; font-size: 110px;">ACTION</text>
+            <text x="100" y="460" fill="white" style="font-family: Arial; font-size: 30px; opacity: 0.8;">Professional User Conversion Tool for Odoo 19</text>
+            <rect x="100" y="500" width="300" height="10" fill="#FFD700" rx="5"/>
+            <g transform="translate(800, 200) scale(1.5)">
+                <rect width="150" height="150" rx="30" fill="white" fill-opacity="0.2"/>
+                <path d="M75 30C60 30 50 40 50 55C50 70 60 80 75 80C90 80 100 70 100 55C100 40 90 30 75 30Z" fill="white"/>
+                <path d="M75 90C55 90 40 105 40 125V130H110V125C110 105 95 90 75 90Z" fill="white" fill-opacity="0.8"/>
+            </g>
+        </svg>
     </div>
 </section>
 
