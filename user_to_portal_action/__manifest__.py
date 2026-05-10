@@ -20,7 +20,7 @@
         'security/security_data.xml',
         'data/server_action.xml',
     ],
-    'images': ['static/description/main_screenshot.png'],
+    'images': ['static/description/banner.png'],
     'installable': True,
     'application': False,
     'license': 'LGPL-3',
