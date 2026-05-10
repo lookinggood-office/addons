@@ -1,5 +1,5 @@
 {
-    'name': 'PortalSwift',
+    'name': 'User2Portal Action',
     'summary': 'Fast & Secure Bulk User-to-Portal Conversion',
     'description': """
     Swift Portalize
@@ -11,8 +11,8 @@
     - Native Odoo 19 field support (group_ids)
     - Zero-config deployment
     """,
-    'author': 'LookingGood Co.,Ltd.',
-    'website': 'lookinggood.odoo.com',
+    'author': 'LKG Team',
+    'website': 'lkgood.odoo.com',
     'category': 'Extra Tools',
     'version': '19.0.1.4',
     'depends': ['base'],
