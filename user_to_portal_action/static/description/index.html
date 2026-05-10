@@ -1,7 +1,7 @@
 <section class="oe_container" style="font-family: 'Montserrat', 'Segoe UI', Roboto, sans-serif;">
+    <!-- Hero Section: Adjusted for Odoo Store -->
     <div class="oe_row oe_spaced">
         <div class="oe_span12">
-            <!-- Hero Section -->
             <div class="text-center" style="background: linear-gradient(135deg, #1A237E 0%, #0D47A1 100%); border-radius: 20px; padding: 60px 20px; margin-bottom: 40px; box-shadow: 0 15px 35px rgba(26, 35, 126, 0.2);">
                 <div class="mb-4">
                     <span style="background: rgba(255, 255, 255, 0.15); color: white; padding: 10px 25px; border-radius: 50px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; border: 1px solid rgba(255,255,255,0.3);">
@@ -16,8 +16,8 @@
         </div>
     </div>
 
-    <!-- Key Benefits -->
-    <div class="oe_row oe_spaced">
+    <!-- Key Benefits: Adjusted for Odoo Store -->
+    <div class="oe_row oe_spaced" style="display: flex; flex-wrap: wrap; margin-bottom: 40px;">
         <div class="col-md-4 mb-4">
             <div class="text-center p-4" style="background: #ffffff; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); height: 100%; border-top: 4px solid #1A237E;">
                 <div class="mb-3" style="font-size: 48px; color: #1A237E;"><i class="fa fa-th-list"></i></div>
@@ -41,84 +41,69 @@
         </div>
     </div>
 
-    <!-- How to use -->
-    <div class="oe_row oe_spaced">
-        <div class="oe_span12 text-center mb-5">
-            <h2 class="oe_slogan" style="color: #1A237E; font-weight: 800; opacity: 1;">How It Works?</h2>
-            <p style="font-size: 18px; color: #777;">Three simple steps to streamline your user management.</p>
+    <!-- How to use it Section (Reverted to original structure) -->
+    <section class="p-5 mb-5" style="background: #ffffff; border-radius: 24px; box-shadow: 0 15px 50px rgba(26, 35, 126, 0.03); border: 1px solid #f0f4f8;">
+        <div class="text-center mb-5">
+            <h2 style="font-weight: 800; font-size: 32px; color: #1A237E;">How to use it?</h2>
+            <p style="color: #78909C;">Visual guide to streamline your workflow.</p>
         </div>
-
+        
         <!-- Step 1 -->
-        <div class="oe_row oe_spaced align-items-center">
-            <div class="col-md-6">
-                <div class="p-3">
-                    <h3 style="color: #1A237E; font-weight: 700; border-left: 5px solid #1A237E; padding-left: 20px; margin-bottom: 20px;">1. Select Target Users</h3>
-                    <p style="color: #555; font-size: 17px; line-height: 1.6; padding-left: 25px;">
-                        Navigate to <b>Settings > Users</b>. In the list view, select the users you wish to convert to Portal access.
-                    </p>
+        <div class="row align-items-center mb-5 pb-4" style="border-bottom: 1px solid #f0f0f0;">
+            <div class="col-md-4">
+                <div class="d-flex align-items-center mb-3">
+                    <h5 style="color: #1A237E; font-weight: 700; font-size: 24px; margin: 0;">Select Users</h5>
                 </div>
+                <p style="color: #546E7A; font-size: 17px; line-height: 1.6;">Go to <b>Users</b> list view and select the users you want to convert.</p>
             </div>
-            <div class="col-md-6 text-center">
-                <img class="img-fluid oe_screenshot" src="image/how_to_1.png" style="border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #eee;" alt="Select Users"/>
+            <div class="col-md-8 text-center">
+                <div style="padding: 15px; background: #F8FAFC; border-radius: 24px; border: 1px solid #E2E8F0;">
+                    <img class="img-fluid" src="image/how_to_1.png" style="width: 100%; max-width: 800px; height: auto; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.08);" alt="Step 1 Screen"/>
+                </div>
             </div>
         </div>
 
         <!-- Step 2 -->
-        <div class="oe_row oe_spaced align-items-center">
-            <div class="col-md-6 order-md-2">
-                <div class="p-3">
-                    <h3 style="color: #1A237E; font-weight: 700; border-left: 5px solid #1A237E; padding-left: 20px; margin-bottom: 20px;">2. Launch Action</h3>
-                    <p style="color: #555; font-size: 17px; line-height: 1.6; padding-left: 25px;">
-                        Click on the <b>Action</b> button at the top of the list and select <b>"Switch User to Portal"</b>.
-                    </p>
+        <div class="row align-items-center mb-5 pb-4" style="border-bottom: 1px solid #f0f0f0;">
+            <div class="col-md-4 order-md-2">
+                <div class="d-flex align-items-center mb-3">
+                    <h5 style="color: #1A237E; font-weight: 700; font-size: 24px; margin: 0;">Trigger Action</h5>
                 </div>
+                <p style="color: #546E7A; font-size: 17px; line-height: 1.6;">Click the <b>Action</b> menu and choose <b>"Switch User to Portal"</b>.</p>
             </div>
-            <div class="col-md-6 order-md-1 text-center">
-                <img class="img-fluid oe_screenshot" src="image/how_to_2.png" style="border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #eee;" alt="Trigger Action"/>
+            <div class="col-md-8 order-md-1 text-center">
+                <div style="padding: 15px; background: #F8FAFC; border-radius: 24px; border: 1px solid #E2E8F0;">
+                    <img class="img-fluid" src="image/how_to_2.png" style="width: 100%; max-width: 800px; height: auto; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.08);" alt="Step 2 Screen"/>
+                </div>
             </div>
         </div>
 
         <!-- Step 3 -->
-        <div class="oe_row oe_spaced align-items-center">
-            <div class="col-md-6">
-                <div class="p-3">
-                    <h3 style="color: #1A237E; font-weight: 700; border-left: 5px solid #1A237E; padding-left: 20px; margin-bottom: 20px;">3. Instant Conversion</h3>
-                    <p style="color: #555; font-size: 17px; line-height: 1.6; padding-left: 25px;">
-                        The system processes the conversion immediately. You will receive a success notification confirming the number of users converted.
-                    </p>
+        <div class="row align-items-center">
+            <div class="col-md-4">
+                <div class="d-flex align-items-center mb-3">
+                    <h5 style="color: #1A237E; font-weight: 700; font-size: 24px; margin: 0;">Success!</h5>
+                </div>
+                <p style="color: #546E7A; font-size: 17px; line-height: 1.6;">The users are converted instantly, and you'll see a success notification.</p>
+            </div>
+            <div class="col-md-8 text-center">
+                <div style="padding: 15px; background: #F8FAFC; border-radius: 24px; border: 1px solid #E2E8F0;">
+                    <img class="img-fluid" src="image/how_to_3.png" style="width: 100%; max-width: 800px; height: auto; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.08);" alt="Step 3 Screen"/>
                 </div>
             </div>
-            <div class="col-md-6 text-center">
-                <img class="img-fluid oe_screenshot" src="image/how_to_3.png" style="border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #eee;" alt="Success Notification"/>
-            </div>
         </div>
-    </div>
+    </section>
 
-    <!-- FAQ / Support -->
-    <div class="oe_row oe_spaced">
-        <div class="col-md-12 text-center" style="background: #F8FAFC; padding: 50px; border-radius: 20px;">
-            <h2 style="color: #1A237E; font-weight: 800; margin-bottom: 30px;">Need Help?</h2>
-            <div class="d-flex justify-content-center gap-4 flex-wrap">
-                <div style="background: white; padding: 20px 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                    <i class="fa fa-envelope" style="color: #1A237E; margin-right: 10px;"></i>
-                    <span style="font-weight: 600;">support@lkgood.com</span>
-                </div>
-                <div style="background: white; padding: 20px 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                    <i class="fa fa-globe" style="color: #1A237E; margin-right: 10px;"></i>
-                    <span style="font-weight: 600;">lkgood.odoo.com</span>
-                </div>
-            </div>
+    <!-- Footer Branding (Reverted to original structure) -->
+    <footer class="text-center pb-5">
+        <div style="margin-bottom: 20px;">
+            <hr style="border: 0; border-top: 1px solid #E0E0E0; margin-bottom: 40px;">
+            <p style="color: #90A4AE; font-weight: 600; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase;">Engineered by</p>
+            <h2 style="color: #1A237E; font-weight: 900; margin-top: -5px; letter-spacing: -0.5px;">LookingGood</h2>
         </div>
-    </div>
-
-    <!-- Footer Branding -->
-    <div class="oe_row oe_spaced text-center">
-        <div class="oe_span12">
-            <hr style="border: 0; border-top: 1px solid #E0E0E0; margin: 40px 0;">
-            <p style="color: #90A4AE; font-weight: 600; font-size: 13px; letter-spacing: 2px; text-transform: uppercase;">A Product of</p>
-            <h2 style="color: #1A237E; font-weight: 900; margin-top: -5px;">LookingGood</h2>
-            <p style="color: #B0BEC5; font-size: 12px; margin-top: 20px;">© 2025-TODAY LookingGood. All Rights Reserved.</p>
+        <div style="display: flex; justify-content: center; gap: 25px; margin-bottom: 20px;">
+            <span style="color: #0D47A1; font-weight: 600;"><i class="fa fa-link" style="margin-right: 5px;"></i> lkgood.odoo.com</span>
         </div>
-    </div>
+        <p style="color: #B0BEC5; font-size: 12px;">© 2025-TODAY LookingGood. All Rights Reserved.</p>
+    </footer>
 </section>
-
