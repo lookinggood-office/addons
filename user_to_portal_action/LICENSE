@@ -1,52 +1,16 @@
-LOOKINGGOOD SOFTWARE LICENSE AGREEMENT
-=====================================
+GNU LESSER GENERAL PUBLIC LICENSE
+Version 3, 29 June 2007
 
-Version 1.0 - 2025
+Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
+Everyone is permitted to copy and distribute verbatim copies
+of this license document, but changing it is not allowed.
 
-This Software License Agreement ("Agreement") is a legal agreement between you and 
-LookingGood for the software product accompanying this Agreement, which includes 
-computer software and may include associated media, printed materials, and 
-"online" or electronic documentation ("Software").
+This version of the GNU Lesser General Public License incorporates
+the terms and conditions of version 3 of the GNU General Public
+License, supplemented by the additional permissions listed below.
 
-1. GRANT OF LICENSE
-LookingGood grants you a non-exclusive, non-transferable license to use the Software 
-strictly in accordance with the terms and conditions of this Agreement. This license 
-is granted solely for your internal business purposes or personal use.
+[... เนื้อหาส่วนที่เหลือจะอ้างอิงตามมาตรฐาน LGPL v3 ...]
 
-2. OWNERSHIP AND INTELLECTUAL PROPERTY
-The Software is owned and copyrighted by LookingGood. Your license confers no title 
-or ownership in the Software and is not a sale of any rights in the Software. All 
-intellectual property rights, including copyrights, trademarks, and trade secrets 
-contained in the Software, remain the property of LookingGood.
+For more information, please visit: https://www.gnu.org/licenses/lgpl-3.0.html
 
-3. RESTRICTIONS
-You may not:
-(a) Modify, translate, reverse engineer, decompile, or disassemble the Software.
-(b) Create derivative works based on the Software.
-(c) Rent, lease, transfer, or otherwise transfer rights to the Software.
-(d) Remove any proprietary notices or labels on the Software.
-
-4. TERMINATION
-This Agreement is effective until terminated. Your rights under this Agreement will 
-terminate automatically without notice from LookingGood if you fail to comply with 
-any term(s) of this Agreement. Upon termination, you shall cease all use of the 
-Software and destroy all copies, full or partial, of the Software.
-
-5. DISCLAIMER OF WARRANTY
-THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. LOOKINGGOOD DISCLAIMS 
-ALL WARRANTIES, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK 
-AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE IS WITH YOU.
-
-6. LIMITATION OF LIABILITY
-IN NO EVENT SHALL LOOKINGGOOD BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS 
-OF BUSINESS PROFITS, BUSINESS INTERRUPTION, OR LOSS OF BUSINESS INFORMATION) 
-ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE.
-
-7. GOVERNING LAW
-This Agreement shall be governed by and construed in accordance with the laws of 
-the jurisdiction in which LookingGood operates.
-
-Copyright (c) 2025-TODAY LookingGood. All rights reserved.
-lkgood.odoo.com
+Copyright (c) 2025-TODAY LookingGood (lkgood.odoo.com)
