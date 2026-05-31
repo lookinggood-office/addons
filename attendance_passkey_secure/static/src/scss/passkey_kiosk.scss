@@ -1,0 +1,108 @@
+// Hide Odoo Branding globally in Kiosk
+.o_brand_promotion, .o_hr_attendance_kiosk_footer {
+    display: none !important;
+}
+
+// Passkey Floating Button Styling
+.passkey-floating-container {
+    position: fixed;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    
+    // Desktop Default: Bottom Left
+    bottom: 30px;
+    left: 30px;
+
+    .passkey-floating-btn {
+        border-radius: 50px;
+        border: 2px solid white !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        white-space: nowrap;
+        transition: all 0.2s ease;
+
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        &:active {
+            transform: translateY(-1px);
+        }
+    }
+
+    // Responsive: Mobile & Small Tablets
+    @media (max-width: 767.98px) {
+        bottom: 20px;
+        left: 20px;
+        right: 20px;
+        display: flex;
+        justify-content: center;
+
+        .passkey-floating-btn {
+            width: 100%;
+            max-width: 320px;
+            padding: 12px 20px;
+        }
+    }
+}
+
+// Verification Overlay - Responsive
+.passkey-verify-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+
+    .passkey-verify-card {
+        background: white;
+        border-radius: 24px;
+        padding: 3rem;
+        text-center: center;
+        border: 1px solid #eee;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        max-width: 450px;
+        width: 90%;
+        margin: auto;
+
+        @media (max-width: 575.98px) {
+            padding: 2rem;
+            border-radius: 16px;
+            
+            i.fa-shield {
+                font-size: 3rem !important;
+            }
+            h3 {
+                font-size: 1.5rem;
+            }
+        }
+    }
+}
+
+// Registration Wizard - Premium Redesign
+.passkey-register-wizard {
+    font-family: inherit;
+    
+    .bg-primary-light {
+        background-color: rgba(113, 75, 103, 0.1) !important;
+    }
+
+    .o_input_group:focus-within {
+        border-color: #714B67 !important;
+        box-shadow: 0 0 0 3px rgba(113, 75, 103, 0.1);
+    }
+}
+
+// Animations
+.animate-pulse {
+    animation: pulse-soft 2s infinite ease-in-out;
+}
+
+@keyframes pulse-soft {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}

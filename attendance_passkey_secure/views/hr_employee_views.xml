@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Add a Passkeys tab to the HR Employee form -->
+    <record id="view_hr_employee_passkey_form_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.form.passkey.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+
+            <!--
+                Append our tab at the end of the notebook.
+                //notebook is the most version-stable xpath — it does not
+                depend on any specific page name that can vary across releases.
+            -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Passkeys" name="passkeys" invisible="not id">
+                    <div class="o_horizontal_separator mt-2 mb-3 fw-bold text-primary">Secure Authentication Devices</div>
+                    <p class="text-muted small mb-4">
+                        Manage the devices authorized to check-in via biometric passkey. 
+                        Each device must be registered individually by the user or an HR manager.
+                    </p>
+
+                    <field name="passkey_ids"
+                           nolabel="1"
+                           context="{'default_employee_id': id}">
+                        <list editable="bottom" class="o_passkey_list">
+                            <field name="device_name"
+                                   placeholder="e.g. My iPhone 15"
+                                   class="fw-bold"/>
+                            <field name="sign_count" string="Usage Count" readonly="1" decoration-info="1"/>
+                            <field name="registered_at" string="First Used" readonly="1" widget="datetime"/>
+                            <field name="active" widget="boolean_toggle" string="Enabled"/>
+                        </list>
+                    </field>
+
+                    <div class="d-flex justify-content-start mt-4 p-3 bg-light rounded-3 border">
+                        <div class="me-auto">
+                            <h6 class="fw-bold m-0">Add New Device</h6>
+                            <span class="text-muted small">The device must support Biometrics or Security Keys.</span>
+                        </div>
+                        <button name="action_register_passkey"
+                                string="Register This Device"
+                                type="object"
+                                class="btn btn-primary d-flex align-items-center gap-2"
+                                icon="fa-plus-circle">
+                        </button>
+                    </div>
+                </page>
+            </xpath>
+
+
+        </field>
+    </record>
+
+</odoo>

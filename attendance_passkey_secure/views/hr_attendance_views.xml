@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Add check-in method to the attendance form -->
+    <record id="view_attendance_passkey_secure_form_inherit" model="ir.ui.view">
+        <field name="name">hr.attendance.form.passkey.inherit</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='check_in']" position="after">
+                <field name="check_in_method" readonly="1"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- Add check-in method to the attendance list view -->
+    <record id="view_attendance_tree_inherit" model="ir.ui.view">
+        <field name="name">hr.attendance.list.passkey.inherit</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='check_out']" position="after">
+                <field name="check_in_method" optional="show" widget="badge" 
+                       decoration-info="check_in_method == 'passkey'"
+                       decoration-muted="check_in_method == 'manual'"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
