@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_construction_vendor_user,construction.vendor user,model_construction_vendor,base.group_user,1,1,1,1
+access_construction_vendor_public,construction.vendor public,model_construction_vendor,base.group_public,1,0,0,0
+access_construction_vendor_portal,construction.vendor portal,model_construction_vendor,base.group_portal,1,1,0,0
+access_construction_vendor_product_user,construction.vendor.product user,model_construction_vendor_product,base.group_user,1,1,1,1
+access_construction_vendor_product_public,construction.vendor.product public,model_construction_vendor_product,base.group_public,1,0,0,0
+access_construction_vendor_product_portal,construction.vendor.product portal,model_construction_vendor_product,base.group_portal,1,1,1,0
+access_construction_vendor_product_image_user,construction.vendor.product.image user,model_construction_vendor_product_image,base.group_user,1,1,1,1
+access_construction_vendor_product_image_public,construction.vendor.product.image public,model_construction_vendor_product_image,base.group_public,1,0,0,0
+access_construction_vendor_product_image_portal,construction.vendor.product.image portal,model_construction_vendor_product_image,base.group_portal,1,0,1,0
+access_construction_vendor_category_user,construction.vendor.category user,model_construction_vendor_category,base.group_user,1,1,1,1
+access_construction_vendor_category_public,construction.vendor.category public,model_construction_vendor_category,base.group_public,1,0,0,0
+access_construction_vendor_category_portal,construction.vendor.category portal,model_construction_vendor_category,base.group_portal,1,0,0,0

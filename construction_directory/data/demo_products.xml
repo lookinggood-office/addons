@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="demo_product_concrete" model="construction.vendor.product">
+            <field name="name">ตัวอย่าง: คอนกรีตผสมเสร็จ</field>
+            <field name="vendor_id" ref="construction_directory.vendor_demo_chonburi_concrete"/>
+            <field name="category_id" ref="construction_directory.category_cement"/>
+            <field name="image_1920" type="base64" file="construction_directory/static/description/sample_photos/concrete.jpg"/>
+            <field name="description"><![CDATA[<p>ภาพประกอบตัวอย่างจากคลังภาพสตอก รายละเอียดและรุ่นสินค้าจริงโปรดสอบถามผู้จำหน่าย</p>]]></field>
+            <field name="is_published" eval="True"/>
+        </record>
+        <record id="demo_product_steel" model="construction.vendor.product">
+            <field name="name">ตัวอย่าง: เหล็กเสริมคอนกรีต</field>
+            <field name="vendor_id" ref="construction_directory.vendor_demo_bangkok_steel"/>
+            <field name="category_id" ref="construction_directory.category_steel"/>
+            <field name="image_1920" type="base64" file="construction_directory/static/description/sample_photos/steel.jpg"/>
+            <field name="description"><![CDATA[<p>ภาพประกอบตัวอย่างจากคลังภาพสตอก รายละเอียดและรุ่นสินค้าจริงโปรดสอบถามผู้จำหน่าย</p>]]></field>
+            <field name="is_published" eval="True"/>
+        </record>
+        <record id="demo_product_roofing" model="construction.vendor.product">
+            <field name="name">ตัวอย่าง: วัสดุมุงหลังคา</field>
+            <field name="vendor_id" ref="construction_directory.vendor_demo_chiangmai_roofing"/>
+            <field name="category_id" ref="construction_directory.category_roofing"/>
+            <field name="image_1920" type="base64" file="construction_directory/static/description/sample_photos/roofing.jpg"/>
+            <field name="description"><![CDATA[<p>ภาพประกอบตัวอย่างจากคลังภาพสตอก รายละเอียดและรุ่นสินค้าจริงโปรดสอบถามผู้จำหน่าย</p>]]></field>
+            <field name="is_published" eval="True"/>
+        </record>
+        <record id="demo_product_tiles" model="construction.vendor.product">
+            <field name="name">ตัวอย่าง: กระเบื้องตกแต่ง</field>
+            <field name="vendor_id" ref="construction_directory.vendor_demo_khonkaen_flooring"/>
+            <field name="category_id" ref="construction_directory.category_tiles"/>
+            <field name="image_1920" type="base64" file="construction_directory/static/description/sample_photos/tiles.jpg"/>
+            <field name="description"><![CDATA[<p>ภาพประกอบตัวอย่างจากคลังภาพสตอก รายละเอียดและรุ่นสินค้าจริงโปรดสอบถามผู้จำหน่าย</p>]]></field>
+            <field name="is_published" eval="True"/>
+        </record>
+        <record id="demo_product_paint" model="construction.vendor.product">
+            <field name="name">ตัวอย่าง: สีทาอาคาร</field>
+            <field name="vendor_id" ref="construction_directory.vendor_demo_phuket_paint"/>
+            <field name="category_id" ref="construction_directory.category_paint"/>
+            <field name="image_1920" type="base64" file="construction_directory/static/description/sample_photos/paint.jpg"/>
+            <field name="description"><![CDATA[<p>ภาพประกอบตัวอย่างจากคลังภาพสตอก รายละเอียดและรุ่นสินค้าจริงโปรดสอบถามผู้จำหน่าย</p>]]></field>
+            <field name="is_published" eval="True"/>
+        </record>
+        <record id="demo_product_plumbing" model="construction.vendor.product">
+            <field name="name">ตัวอย่าง: ท่อและอุปกรณ์ประปา</field>
+            <field name="vendor_id" ref="construction_directory.vendor_demo_nakhonratchasima_plumbing"/>
+            <field name="category_id" ref="construction_directory.category_plumbing"/>
+            <field name="image_1920" type="base64" file="construction_directory/static/description/sample_photos/plumbing.jpg"/>
+            <field name="description"><![CDATA[<p>ภาพประกอบตัวอย่างจากคลังภาพสตอก รายละเอียดและรุ่นสินค้าจริงโปรดสอบถามผู้จำหน่าย</p>]]></field>
+            <field name="is_published" eval="True"/>
+        </record>
+        <record id="demo_product_electrical" model="construction.vendor.product">
+            <field name="name">ตัวอย่าง: อุปกรณ์ระบบไฟฟ้า</field>
+            <field name="vendor_id" ref="construction_directory.vendor_demo_songkhla_electrical"/>
+            <field name="category_id" ref="construction_directory.category_electrical"/>
+            <field name="image_1920" type="base64" file="construction_directory/static/description/sample_photos/electrical.jpg"/>
+            <field name="description"><![CDATA[<p>ภาพประกอบตัวอย่างจากคลังภาพสตอก รายละเอียดและรุ่นสินค้าจริงโปรดสอบถามผู้จำหน่าย</p>]]></field>
+            <field name="is_published" eval="True"/>
+        </record>
+        <record id="demo_product_tools" model="construction.vendor.product">
+            <field name="name">ตัวอย่าง: เครื่องมือช่าง</field>
+            <field name="vendor_id" ref="construction_directory.vendor_demo_ubon_tools"/>
+            <field name="category_id" ref="construction_directory.category_tools"/>
+            <field name="image_1920" type="base64" file="construction_directory/static/description/sample_photos/tools.jpg"/>
+            <field name="description"><![CDATA[<p>ภาพประกอบตัวอย่างจากคลังภาพสตอก รายละเอียดและรุ่นสินค้าจริงโปรดสอบถามผู้จำหน่าย</p>]]></field>
+            <field name="is_published" eval="True"/>
+        </record>
+    </data>
+</odoo>

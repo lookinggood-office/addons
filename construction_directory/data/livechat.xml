@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="directory_chatbot_partner" model="res.partner">
+            <field name="name">ผู้ช่วยวัสดุไทย</field>
+            <field name="active" eval="False"/>
+        </record>
+        <record id="directory_chatbot" model="chatbot.script">
+            <field name="title">ผู้ช่วยวัสดุไทย</field>
+            <field name="operator_partner_id" ref="directory_chatbot_partner"/>
+        </record>
+        <record id="directory_chatbot_welcome" model="chatbot.script.step">
+            <field name="message">สวัสดีครับ ยินดีต้อนรับสู่เว็บไซต์วัสดุไทย ผมช่วยค้นหาตัวแทนหรือรับคำถามฝากทีมงานได้ครับ</field>
+            <field name="sequence">1</field>
+            <field name="step_type">text</field>
+            <field name="chatbot_script_id" ref="directory_chatbot"/>
+        </record>
+        <record id="directory_chatbot_help" model="chatbot.script.step">
+            <field name="message">ต้องการให้ช่วยเรื่องใดครับ?</field>
+            <field name="sequence">2</field>
+            <field name="step_type">question_selection</field>
+            <field name="chatbot_script_id" ref="directory_chatbot"/>
+        </record>
+        <record id="directory_chatbot_answer_search" model="chatbot.script.answer">
+            <field name="name">ค้นหาตัวแทนวัสดุ</field>
+            <field name="redirect_link">/vendors</field>
+            <field name="sequence">1</field>
+            <field name="script_step_id" ref="directory_chatbot_help"/>
+        </record>
+        <record id="directory_chatbot_answer_message" model="chatbot.script.answer">
+            <field name="name">ฝากคำถามให้ทีมงาน</field>
+            <field name="sequence">2</field>
+            <field name="script_step_id" ref="directory_chatbot_help"/>
+        </record>
+        <record id="directory_chatbot_question" model="chatbot.script.step">
+            <field name="message">พิมพ์คำถามหรือรายละเอียดที่ต้องการให้ทีมงานช่วยได้เลยครับ</field>
+            <field name="sequence">3</field>
+            <field name="step_type">free_input_multi</field>
+            <field name="chatbot_script_id" ref="directory_chatbot"/>
+            <field name="triggering_answer_ids" eval="[(4, ref('directory_chatbot_answer_message'))]"/>
+        </record>
+        <record id="directory_chatbot_email" model="chatbot.script.step">
+            <field name="message">หากต้องการให้ทีมงานติดต่อกลับ กรุณาฝากอีเมลไว้ได้ครับ</field>
+            <field name="sequence">4</field>
+            <field name="step_type">question_email</field>
+            <field name="chatbot_script_id" ref="directory_chatbot"/>
+            <field name="triggering_answer_ids" eval="[(4, ref('directory_chatbot_answer_message'))]"/>
+        </record>
+        <record id="directory_chatbot_rule" model="im_livechat.channel.rule">
+            <field name="regex_url">.*</field>
+            <field name="sequence">1</field>
+            <field name="action">display_button</field>
+            <field name="chatbot_enabled_condition">only_if_no_operator</field>
+            <field name="chatbot_script_id" ref="directory_chatbot"/>
+            <field name="channel_id" ref="im_livechat.im_livechat_channel_data"/>
+        </record>
+    </data>
+</odoo>

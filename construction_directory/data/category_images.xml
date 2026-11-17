@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="category_cement" model="construction.vendor.category">
+        <field name="image_1920" type="base64" file="construction_directory/static/description/sample_photos/concrete.jpg"/>
+    </record>
+    <record id="category_steel" model="construction.vendor.category">
+        <field name="image_1920" type="base64" file="construction_directory/static/description/sample_photos/steel.jpg"/>
+    </record>
+    <record id="category_roofing" model="construction.vendor.category">
+        <field name="image_1920" type="base64" file="construction_directory/static/description/sample_photos/roofing.jpg"/>
+    </record>
+    <record id="category_tiles" model="construction.vendor.category">
+        <field name="image_1920" type="base64" file="construction_directory/static/description/sample_photos/tiles.jpg"/>
+    </record>
+    <record id="category_paint" model="construction.vendor.category">
+        <field name="image_1920" type="base64" file="construction_directory/static/description/sample_photos/paint.jpg"/>
+    </record>
+    <record id="category_plumbing" model="construction.vendor.category">
+        <field name="image_1920" type="base64" file="construction_directory/static/description/sample_photos/plumbing.jpg"/>
+    </record>
+    <record id="category_electrical" model="construction.vendor.category">
+        <field name="image_1920" type="base64" file="construction_directory/static/description/sample_photos/electrical.jpg"/>
+    </record>
+    <record id="category_tools" model="construction.vendor.category">
+        <field name="image_1920" type="base64" file="construction_directory/static/description/sample_photos/tools.jpg"/>
+    </record>
+</odoo>

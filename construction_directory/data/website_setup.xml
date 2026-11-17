@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="website.default_website" model="website">
+        <field name="name">WAREHOUSE CO</field>
+        <field name="homepage_url">/vendors</field>
+        <field name="logo" type="base64" file="construction_directory/static/description/logo.png"/>
+        <field name="favicon" type="base64" file="construction_directory/static/description/favicon.png"/>
+    </record>
+    <record id="base.main_company" model="res.company">
+        <field name="phone" eval="False"/>
+    </record>
+    <function model="website" name="setup_construction_directory_navigation"/>
+    <record id="im_livechat.im_livechat_channel_data" model="im_livechat.channel">
+        <field name="name">แชตสอบถาม WAREHOUSE CO</field>
+        <field name="button_text">แชตกับเรา</field>
+        <field name="default_message">สวัสดีครับ ต้องการสอบถามเกี่ยวกับบริษัท ตัวแทน หรือบริการในจังหวัดไหนครับ?</field>
+        <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
+    </record>
+</odoo>

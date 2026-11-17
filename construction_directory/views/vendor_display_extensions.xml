@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="product_image_gallery" name="Product image gallery">
+        <div t-att-id="'product-gallery-%s' % product.id" class="product-detail-gallery">
+            <div t-att-id="'product-gallery-carousel-%s' % product.id" class="carousel slide product-image-gallery" data-bs-touch="true" data-bs-interval="false">
+            <div class="carousel-inner">
+                <div t-if="product.image_1920" class="carousel-item active">
+                    <button type="button" class="product-gallery-image-trigger" data-bs-toggle="modal" data-bs-target="#product-image-modal" data-photo-index="0" t-att-data-image-src="'/web/image/construction.vendor.product/%s/image_1920?v=19.0.15&amp;unique=%s' % (product.id, product.write_date)" t-att-data-image-alt="product.name" t-att-aria-label="'ขยายรูป %s รูปที่ 1' % product.name">
+                        <img t-att-src="'/web/image/construction.vendor.product/%s/image_1920?v=19.0.15&amp;unique=%s' % (product.id, product.write_date)" t-att-alt="product.name" loading="lazy"/>
+                    </button>
+                </div>
+                <t t-foreach="product.image_ids" t-as="gallery_image">
+                    <div t-att-class="'carousel-item active' if not product.image_1920 and gallery_image_index == 0 else 'carousel-item'">
+                        <button type="button" class="product-gallery-image-trigger" data-bs-toggle="modal" data-bs-target="#product-image-modal" t-att-data-photo-index="gallery_image_index + (1 if product.image_1920 else 0)" t-att-data-image-src="'/web/image/construction.vendor.product.image/%s/image_1920?v=19.0.15&amp;unique=%s' % (gallery_image.id, gallery_image.write_date)" t-att-data-image-alt="product.name" t-att-aria-label="'ขยายรูป %s รูปที่ %s' % (product.name, gallery_image_index + (2 if product.image_1920 else 1))">
+                            <img t-att-src="'/web/image/construction.vendor.product.image/%s/image_1920?v=19.0.15&amp;unique=%s' % (gallery_image.id, gallery_image.write_date)" t-att-alt="product.name" loading="lazy"/>
+                        </button>
+                    </div>
+                </t>
+            </div>
+            <t t-if="product.image_count &gt; 1">
+                <button class="carousel-control-prev" type="button" t-att-data-bs-target="'#product-gallery-carousel-%s' % product.id" data-bs-slide="prev" aria-label="รูปก่อนหน้า"><span class="carousel-control-prev-icon" aria-hidden="true"/></button>
+                <button class="carousel-control-next" type="button" t-att-data-bs-target="'#product-gallery-carousel-%s' % product.id" data-bs-slide="next" aria-label="รูปถัดไป"><span class="carousel-control-next-icon" aria-hidden="true"/></button>
+            </t>
+            </div>
+            <div t-if="product.image_count &gt; 1" class="product-gallery-thumbnails" aria-label="รูปสินค้าทั้งหมด">
+                <button t-if="product.image_1920" type="button" class="product-gallery-thumbnail active" t-att-data-bs-target="'#product-gallery-carousel-%s' % product.id" data-bs-slide-to="0" aria-label="ดูรูปที่ 1">
+                    <img t-att-src="'/web/image/construction.vendor.product/%s/image_1920?v=19.0.15&amp;unique=%s' % (product.id, product.write_date)" t-att-alt="product.name" loading="lazy"/>
+                </button>
+                <t t-foreach="product.image_ids" t-as="gallery_image">
+                    <button type="button" t-att-class="'product-gallery-thumbnail active' if not product.image_1920 and gallery_image_index == 0 else 'product-gallery-thumbnail'" t-att-data-bs-target="'#product-gallery-carousel-%s' % product.id" t-att-data-bs-slide-to="gallery_image_index + (1 if product.image_1920 else 0)" t-att-aria-label="'ดูรูปที่ %s' % (gallery_image_index + (2 if product.image_1920 else 1))">
+                        <img t-att-src="'/web/image/construction.vendor.product.image/%s/image_1920?v=19.0.15&amp;unique=%s' % (gallery_image.id, gallery_image.write_date)" t-att-alt="product.name" loading="lazy"/>
+                    </button>
+                </t>
+            </div>
+            <div id="product-image-modal" class="modal fade product-image-modal" tabindex="-1" aria-hidden="true" aria-label="ดูรูปสินค้าแบบขยาย">
+                <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span class="product-image-modal-count" aria-live="polite"/>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="ปิดภาพขยาย"/>
+                        </div>
+                        <div class="modal-body product-image-modal-body">
+                            <button type="button" class="product-image-modal-nav product-image-modal-prev" aria-label="รูปก่อนหน้า"><span class="carousel-control-prev-icon" aria-hidden="true"/></button>
+                            <img class="product-image-modal-preview" src="" alt=""/>
+                            <button type="button" class="product-image-modal-nav product-image-modal-next" aria-label="รูปถัดไป"><span class="carousel-control-next-icon" aria-hidden="true"/></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="vendor_detail_cover_and_contact" inherit_id="construction_directory.vendor_detail" name="Vendor cover and representative details">
+        <xpath expr="//div[@id='wrap']/div[hasclass('row', 'g-5')]" position="before">
+            <div t-if="vendor.cover_image" class="vendor-detail-cover mb-4">
+                <img t-att-src="'/web/image/construction.vendor/%s/cover_image?v=19.0.14&amp;unique=%s' % (vendor.id, vendor.write_date)" t-att-alt="vendor.name"/>
+            </div>
+            <p t-if="vendor.image_credit_url" class="vendor-photo-credit mb-4">
+                ภาพหน้าปก · <a t-att-href="vendor.image_credit_url" target="_blank" rel="noopener noreferrer"><t t-esc="vendor.image_credit or 'แหล่งที่มาของภาพ'"/></a>
+            </p>
+        </xpath>
+        <xpath expr="//p[@t-if='vendor.contact_name']" position="before">
+            <div t-if="vendor.representative_image" class="representative-photo">
+                <img t-att-src="'/web/image/construction.vendor/%s/representative_image?v=19.0.14&amp;unique=%s' % (vendor.id, vendor.write_date)" t-att-alt="vendor.contact_name or vendor.name"/>
+            </div>
+        </xpath>
+        <xpath expr="//p[@t-if='vendor.contact_name']" position="after">
+            <p t-if="vendor.working_hours" class="vendor-working-hours mb-3">
+                <i class="fa fa-clock-o me-2"/><t t-esc="vendor.working_hours"/>
+            </p>
+        </xpath>
+        <xpath expr="//section[@t-if='vendor.description']" position="before">
+            <section t-if="products" class="vendor-products-section mb-5">
+                <h2 class="h4 mb-3">สินค้าที่จำหน่าย</h2>
+                <div class="row g-3">
+                    <t t-foreach="products" t-as="product">
+                        <div class="col-6 col-lg-4">
+                            <article class="vendor-product-card h-100">
+                                <a t-att-href="'/directory/products/%s' % product.id" class="vendor-product-card-link">
+                                    <img t-if="product.image_1920" class="vendor-product-card-image" t-att-src="'/web/image/construction.vendor.product/%s/image_1920?v=19.0.15&amp;unique=%s' % (product.id, product.write_date)" t-att-alt="product.name" loading="lazy"/>
+                                    <span t-else="" class="vendor-product-card-image vendor-product-card-placeholder">ไม่มีรูปสินค้า</span>
+                                </a>
+                                <div class="p-3"><span t-if="product.category_id" class="vendor-tag"><t t-esc="product.category_id.name"/></span>
+                                    <h3 class="h6 mt-2 mb-1"><a t-att-href="'/directory/products/%s' % product.id" class="vendor-product-title-link"><t t-esc="product.name"/></a></h3>
+                                    <div t-if="product.description" class="vendor-product-description"><t t-out="product.description"/></div>
+                                    <p t-if="product.price" class="vendor-product-price mb-0"><t t-esc="product.price"/></p>
+                                    <a t-att-href="'/directory/products/%s' % product.id" class="btn btn-outline-primary btn-sm mt-3">ดูรายละเอียดสินค้า <i class="fa fa-arrow-right ms-1"/></a>
+                                </div>
+                            </article>
+                        </div>
+                    </t>
+                </div>
+            </section>
+        </xpath>
+    </template>
+
+    <template id="product_detail" name="Construction product detail">
+        <t t-call="website.layout">
+            <t t-set="title"><t t-esc="product.name"/> | <t t-esc="vendor.name"/></t>
+            <div id="wrap" class="container py-5 construction-directory product-detail-page">
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/vendors">ค้นหาตัวแทน</a></li>
+                        <li class="breadcrumb-item"><a t-att-href="'/vendors/%s' % vendor.id"><t t-esc="vendor.name"/></a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><t t-esc="product.name"/></li>
+                    </ol>
+                </nav>
+                <div class="row g-4 g-lg-5 align-items-start">
+                    <div class="col-lg-7">
+                        <t t-call="construction_directory.product_image_gallery"/>
+                        <p class="small text-muted mt-2 mb-0">แตะรูปเพื่อขยาย · เลื่อนรูปด้านล่างเพื่อเลือกรูปที่ต้องการ</p>
+                    </div>
+                    <div class="col-lg-5">
+                        <span t-if="product.category_id" class="vendor-tag"><t t-esc="product.category_id.name"/></span>
+                        <h1 class="h2 mt-2 mb-3"><t t-esc="product.name"/></h1>
+                        <p t-if="product.price" class="product-detail-price"><t t-esc="product.price"/></p>
+                        <section class="product-detail-description">
+                            <h2 class="h5">รายละเอียดสินค้า</h2>
+                            <div t-if="product.description"><t t-out="product.description"/></div>
+                            <p t-else="" class="small text-muted mb-0">ยังไม่มีรายละเอียดเพิ่มเติม</p>
+                        </section>
+                        <div class="product-detail-vendor">
+                            <h2 class="h5">จำหน่ายโดย</h2>
+                            <a t-att-href="'/vendors/%s' % vendor.id" class="product-detail-vendor-link">
+                                <img t-if="vendor.image_1920" t-att-src="'/web/image/construction.vendor/%s/image_1920?v=19.0.14&amp;unique=%s' % (vendor.id, vendor.write_date)" t-att-alt="vendor.name" loading="lazy"/>
+                                <span><strong><t t-esc="vendor.name"/></strong><small t-if="vendor.province_id"><t t-esc="vendor.province_id.name"/></small></span>
+                                <i class="fa fa-arrow-right ms-auto" aria-hidden="true"/>
+                            </a>
+                            <a t-att-href="'/vendors/%s' % vendor.id" class="btn btn-outline-primary mt-3">ดูข้อมูลบริษัทและสินค้าทั้งหมด</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="vendor_list_business_hours" inherit_id="construction_directory.vendor_list" name="Business hours on representative cards">
+        <xpath expr="//div[hasclass('vendor-card-footer')]" position="before">
+            <p t-if="vendor.working_hours" class="vendor-working-hours small mb-2">
+                <i class="fa fa-clock-o me-1"/><t t-esc="vendor.working_hours"/>
+            </p>
+        </xpath>
+    </template>
+    <template id="vendor_list_product_thumbnails" inherit_id="construction_directory.vendor_list" name="Product photos on representative cards">
+        <xpath expr="//div[hasclass('vendor-card-top')]" position="after">
+            <div t-if="vendor.public_product_ids" class="vendor-product-thumbs">
+                <t t-foreach="vendor.public_product_ids[:3]" t-as="product">
+                    <img t-att-src="'/web/image/construction.vendor.product/%s/image_1920?v=19.0.15&amp;unique=%s' % (product.id, product.write_date)" t-att-alt="product.name" loading="lazy"/>
+                </t>
+                <span t-if="len(vendor.public_product_ids) &gt; 3" class="vendor-product-more">+<t t-esc="len(vendor.public_product_ids) - 3"/></span>
+            </div>
+        </xpath>
+    </template>
+</odoo>

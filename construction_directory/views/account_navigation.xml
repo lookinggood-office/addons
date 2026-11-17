@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="website_vendor_account_navigation" inherit_id="website.navbar_nav" name="Vendor account navigation">
+        <xpath expr="//ul[contains(@t-attf-class, 'top_menu')]" position="inside">
+            <li class="nav-item ms-lg-2" role="none">
+                <a t-if="request.env.user._is_public()" href="/web/login?redirect=/my/home" class="nav-link" role="menuitem">เข้าสู่ระบบ</a>
+                <a t-else="" href="/my/home" class="nav-link" role="menuitem">บัญชีของฉัน</a>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="vendor_list_account_entry" inherit_id="construction_directory.vendor_list" name="Vendor account entry on directory page">
+        <xpath expr="//section[contains(@t-attf-class, 'directory-hero')]" position="after">
+            <section class="vendor-account-entry py-3">
+                <div class="container d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
+                    <span>เป็นตัวแทนอยู่แล้ว? เข้าสู่ระบบเพื่อจัดการข้อมูลบริษัทของคุณ</span>
+                    <div class="d-flex gap-2">
+                        <a t-if="request.env.user._is_public()" href="/web/login?redirect=/my/home" class="btn btn-outline-primary">เข้าสู่ระบบตัวแทน</a>
+                        <a t-else="" href="/my/vendor" class="btn btn-outline-primary">จัดการข้อมูลของฉัน</a>
+                        <a t-if="request.env.user._is_public()" href="/vendors/register" class="btn btn-primary">สมัครตัวแทน</a>
+                    </div>
+                </div>
+            </section>
+        </xpath>
+    </template>
+    <template id="hide_vendor_registration_for_logged_in_users" inherit_id="construction_directory.vendor_list" name="Hide vendor registration after login">
+        <xpath expr="//a[@href='/vendors/register']" position="attributes">
+            <attribute name="t-if">request.env.user._is_public()</attribute>
+        </xpath>
+    </template>
+</odoo>

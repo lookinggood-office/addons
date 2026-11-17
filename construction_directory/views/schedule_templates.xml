@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="vendor_registration_schedule_fields" inherit_id="construction_directory.vendor_register" name="Structured registration business hours">
+        <xpath expr="//div[hasclass('col-md-6')][.//textarea[@id='business-hours']]" position="replace">
+            <div class="col-12"><fieldset class="working-hours-fieldset">
+                <legend class="form-label">เวลาทำการ</legend>
+                <p class="form-text">เลือกวันที่เปิด แล้วระบุเวลาเปิดและปิดของแต่ละวัน</p>
+                <t t-foreach="weekdays" t-as="day">
+                    <div class="working-hours-row">
+                        <label class="form-check mb-0"><input class="form-check-input" type="checkbox" value="1" t-att-name="'hours_%s_open' % day[0]" t-att-checked="schedule.get(day[0], {}).get('open')"/><span class="form-check-label"><t t-esc="day[1]"/></span></label>
+                        <input class="form-control" type="time" t-att-name="'hours_%s_from' % day[0]" t-att-value="schedule.get(day[0], {}).get('from', '')" t-att-aria-label="'เวลาเปิด ' + day[1]"/>
+                        <span class="working-hours-separator">ถึง</span>
+                        <input class="form-control" type="time" t-att-name="'hours_%s_to' % day[0]" t-att-value="schedule.get(day[0], {}).get('to', '')" t-att-aria-label="'เวลาปิด ' + day[1]"/>
+                    </div>
+                </t>
+            </fieldset></div>
+        </xpath>
+    </template>
+
+    <template id="vendor_profile_schedule_fields" inherit_id="construction_directory.portal_vendor_profile" name="Structured profile business hours">
+        <xpath expr="//div[hasclass('col-md-6')][.//textarea[@id='profile-hours']]" position="replace">
+            <div class="col-12"><fieldset class="working-hours-fieldset">
+                <legend class="form-label">เวลาทำการ</legend>
+                <p class="form-text">เลือกวันที่เปิด แล้วระบุเวลาเปิดและปิดของแต่ละวัน</p>
+                <t t-foreach="weekdays" t-as="day">
+                    <div class="working-hours-row">
+                        <label class="form-check mb-0"><input class="form-check-input" type="checkbox" value="1" t-att-name="'hours_%s_open' % day[0]" t-att-checked="schedule.get(day[0], {}).get('open')"/><span class="form-check-label"><t t-esc="day[1]"/></span></label>
+                        <input class="form-control" type="time" t-att-name="'hours_%s_from' % day[0]" t-att-value="schedule.get(day[0], {}).get('from', '')" t-att-aria-label="'เวลาเปิด ' + day[1]"/>
+                        <span class="working-hours-separator">ถึง</span>
+                        <input class="form-control" type="time" t-att-name="'hours_%s_to' % day[0]" t-att-value="schedule.get(day[0], {}).get('to', '')" t-att-aria-label="'เวลาปิด ' + day[1]"/>
+                    </div>
+                </t>
+            </fieldset></div>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="construction_vendor_product_menu" name="สินค้าตัวแทน" parent="construction_directory_menu_root" action="construction_vendor_product_action" sequence="30"/>
+</odoo>

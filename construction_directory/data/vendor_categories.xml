@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="category_cement" model="construction.vendor.category"><field name="name">ปูนซีเมนต์และคอนกรีต</field><field name="sequence">10</field></record>
+    <record id="category_steel" model="construction.vendor.category"><field name="name">เหล็กและโลหะ</field><field name="sequence">20</field></record>
+    <record id="category_roofing" model="construction.vendor.category"><field name="name">หลังคาและวัสดุกันซึม</field><field name="sequence">30</field></record>
+    <record id="category_tiles" model="construction.vendor.category"><field name="name">กระเบื้องและวัสดุปูพื้น</field><field name="sequence">40</field></record>
+    <record id="category_paint" model="construction.vendor.category"><field name="name">สีและเคมีภัณฑ์ก่อสร้าง</field><field name="sequence">50</field></record>
+    <record id="category_plumbing" model="construction.vendor.category"><field name="name">ประปาและสุขภัณฑ์</field><field name="sequence">60</field></record>
+    <record id="category_electrical" model="construction.vendor.category"><field name="name">ระบบไฟฟ้า</field><field name="sequence">70</field></record>
+    <record id="category_tools" model="construction.vendor.category"><field name="name">เครื่องมือและอุปกรณ์ช่าง</field><field name="sequence">80</field></record>
+</odoo>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="vendor_demo_bangkok_steel" model="construction.vendor">
+            <field name="name">ข้อมูลสาธิต · ศูนย์เหล็กก่อสร้าง กรุงเทพฯ</field>
+            <field name="province_id" ref="base.state_th_001"/>
+            <field name="district">บางนา</field>
+            <field name="street">ข้อมูลที่อยู่จำลอง</field>
+            <field name="category_ids" eval="[(6, 0, [ref('construction_directory.category_steel')])]"/>
+            <field name="description">รายชื่อตัวอย่างสำหรับทดสอบการค้นหาและหน้าแสดงข้อมูล ไม่ใช่บริษัทหรือตัวแทนจำหน่ายจริง</field>
+            <field name="contact_name">ผู้ประสานงานตัวอย่าง</field>
+            <field name="contact_email">demo-bangkok@example.invalid</field>
+            <field name="featured" eval="True"/>
+            <field name="is_published" eval="True"/>
+            <field name="sequence">1</field>
+        </record>
+        <record id="vendor_demo_chonburi_concrete" model="construction.vendor">
+            <field name="name">ข้อมูลสาธิต · คอนกรีตพร้อมใช้ ชลบุรี</field>
+            <field name="province_id" ref="base.state_th_012"/>
+            <field name="district">เมืองชลบุรี</field>
+            <field name="street">ข้อมูลที่อยู่จำลอง</field>
+            <field name="category_ids" eval="[(6, 0, [ref('construction_directory.category_cement')])]"/>
+            <field name="description">รายชื่อตัวอย่างสำหรับทดสอบการค้นหาตามจังหวัดและหมวดวัสดุ ข้อมูลทั้งหมดในรายการนี้เป็นข้อมูลจำลอง</field>
+            <field name="contact_name">ผู้ประสานงานตัวอย่าง</field>
+            <field name="contact_email">demo-chonburi@example.invalid</field>
+            <field name="is_published" eval="True"/>
+            <field name="sequence">2</field>
+        </record>
+        <record id="vendor_demo_chiangmai_roofing" model="construction.vendor">
+            <field name="name">ข้อมูลสาธิต · หลังคาและกันซึม เชียงใหม่</field>
+            <field name="province_id" ref="base.state_th_010"/>
+            <field name="district">เมืองเชียงใหม่</field>
+            <field name="street">ข้อมูลที่อยู่จำลอง</field>
+            <field name="category_ids" eval="[(6, 0, [ref('construction_directory.category_roofing')])]"/>
+            <field name="description">รายชื่อตัวอย่างสำหรับแสดงผลในเว็บไซต์ ข้อมูลจำลอง ไม่ใช่ผู้จำหน่ายจริง</field>
+            <field name="contact_name">ผู้ประสานงานตัวอย่าง</field>
+            <field name="contact_email">demo-chiangmai@example.invalid</field>
+            <field name="is_published" eval="True"/>
+            <field name="sequence">3</field>
+        </record>
+        <record id="vendor_demo_khonkaen_flooring" model="construction.vendor">
+            <field name="name">ข้อมูลสาธิต · วัสดุปูพื้น ขอนแก่น</field>
+            <field name="province_id" ref="base.state_th_017"/>
+            <field name="district">เมืองขอนแก่น</field>
+            <field name="street">ข้อมูลที่อยู่จำลอง</field>
+            <field name="category_ids" eval="[(6, 0, [ref('construction_directory.category_tiles')])]"/>
+            <field name="description">รายชื่อตัวอย่างสำหรับทดสอบตัวกรองหมวดกระเบื้องและวัสดุปูพื้น ข้อมูลจำลอง</field>
+            <field name="contact_name">ผู้ประสานงานตัวอย่าง</field>
+            <field name="contact_email">demo-khonkaen@example.invalid</field>
+            <field name="is_published" eval="True"/>
+            <field name="sequence">4</field>
+        </record>
+        <record id="vendor_demo_phuket_paint" model="construction.vendor">
+            <field name="name">ข้อมูลสาธิต · สีและเคมีภัณฑ์ ภูเก็ต</field>
+            <field name="province_id" ref="base.state_th_048"/>
+            <field name="district">เมืองภูเก็ต</field>
+            <field name="street">ข้อมูลที่อยู่จำลอง</field>
+            <field name="category_ids" eval="[(6, 0, [ref('construction_directory.category_paint')])]"/>
+            <field name="description">รายชื่อตัวอย่างสำหรับทดสอบการค้นหาตัวแทนในภาคใต้ ข้อมูลจำลอง</field>
+            <field name="contact_name">ผู้ประสานงานตัวอย่าง</field>
+            <field name="contact_email">demo-phuket@example.invalid</field>
+            <field name="is_published" eval="True"/>
+            <field name="sequence">5</field>
+        </record>
+        <record id="vendor_demo_nakhonratchasima_plumbing" model="construction.vendor">
+            <field name="name">ข้อมูลสาธิต · ระบบประปาและสุขภัณฑ์ โคราช</field>
+            <field name="province_id" ref="base.state_th_029"/>
+            <field name="district">เมืองนครราชสีมา</field>
+            <field name="street">ข้อมูลที่อยู่จำลอง</field>
+            <field name="category_ids" eval="[(6, 0, [ref('construction_directory.category_plumbing')])]"/>
+            <field name="description">รายชื่อตัวอย่างสำหรับทดสอบการค้นหาตามจังหวัดและหมวดสุขภัณฑ์ ข้อมูลจำลอง</field>
+            <field name="contact_name">ผู้ประสานงานตัวอย่าง</field>
+            <field name="contact_email">demo-korat@example.invalid</field>
+            <field name="is_published" eval="True"/>
+            <field name="sequence">6</field>
+        </record>
+        <record id="vendor_demo_songkhla_electrical" model="construction.vendor">
+            <field name="name">ข้อมูลสาธิต · อุปกรณ์ไฟฟ้าก่อสร้าง สงขลา</field>
+            <field name="province_id" ref="base.state_th_064"/>
+            <field name="district">หาดใหญ่</field>
+            <field name="street">ข้อมูลที่อยู่จำลอง</field>
+            <field name="category_ids" eval="[(6, 0, [ref('construction_directory.category_electrical')])]"/>
+            <field name="description">รายชื่อตัวอย่างสำหรับแสดงหมวดระบบไฟฟ้าในภาคใต้ ข้อมูลจำลอง ไม่ใช่ผู้จำหน่ายจริง</field>
+            <field name="contact_name">ผู้ประสานงานตัวอย่าง</field>
+            <field name="contact_email">demo-songkhla@example.invalid</field>
+            <field name="is_published" eval="True"/>
+            <field name="sequence">7</field>
+        </record>
+        <record id="vendor_demo_ubon_tools" model="construction.vendor">
+            <field name="name">ข้อมูลสาธิต · เครื่องมือช่าง อุบลราชธานี</field>
+            <field name="province_id" ref="base.state_th_072"/>
+            <field name="district">เมืองอุบลราชธานี</field>
+            <field name="street">ข้อมูลที่อยู่จำลอง</field>
+            <field name="category_ids" eval="[(6, 0, [ref('construction_directory.category_tools')])]"/>
+            <field name="description">รายชื่อตัวอย่างสำหรับทดสอบหน้ารายละเอียดและตัวกรองอุปกรณ์ช่าง ข้อมูลจำลอง</field>
+            <field name="contact_name">ผู้ประสานงานตัวอย่าง</field>
+            <field name="contact_email">demo-ubon@example.invalid</field>
+            <field name="is_published" eval="True"/>
+            <field name="sequence">8</field>
+        </record>
+    </data>
+</odoo>

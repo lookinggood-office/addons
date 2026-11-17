@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="site_header_phone_cleanup" inherit_id="website.header_text_element" name="Hide placeholder phone number">
+        <xpath expr="//a[starts-with(@href, 'tel:+1 555-555-5556')]" position="replace"/>
+    </template>
+    <template id="site_header_call_to_action" inherit_id="website.header_call_to_action" name="Directory registration call to action">
+        <xpath expr="//a[@href='/contactus'][hasclass('btn_cta')]" position="replace">
+            <a href="/contactus" class="oe_unremovable btn btn-primary btn_cta d-none" aria-hidden="true" tabindex="-1"/>
+        </xpath>
+    </template>
+    <template id="remove_odoo_brand_promotion" inherit_id="website.layout" name="Remove Odoo footer promotion">
+        <xpath expr="//t[@t-call='web.brand_promotion']/.." position="replace"/>
+    </template>
+</odoo>

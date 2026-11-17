@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_my_home_vendor_entry" inherit_id="portal.portal_my_home" name="Representative portal entry">
+        <xpath expr="//div[@id='portal_common_category']" position="inside">
+            <t t-if="request.env['construction.vendor'].sudo().search_count([('user_id', '=', request.env.user.id)])">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/portal/static/src/img/portal-connection.svg'"/>
+                    <t t-set="title">ข้อมูลบริษัท / ตัวแทน</t>
+                    <t t-set="text">แก้ไขข้อมูล รูปภาพ และช่องทางติดต่อ</t>
+                    <t t-set="url" t-value="'/my/vendor'"/>
+                    <t t-set="config_card" t-value="True"/>
+                </t>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_vendor_profile" name="Manage representative profile">
+        <t t-call="portal.portal_layout">
+            <t t-set="title">จัดการข้อมูลตัวแทน</t>
+            <div class="container py-4 construction-directory">
+                <div class="row justify-content-center"><div class="col-lg-9">
+                    <h1 class="h2 mb-3">จัดการข้อมูลบริษัท / ตัวแทน</h1>
+                    <div t-if="request.params.get('saved')" class="alert alert-success" role="status">บันทึกข้อมูลแล้ว</div>
+                    <div t-if="request.params.get('images_saved')" class="alert alert-success" role="status">อัปเดตรูปภาพแล้ว โดยสถานะอนุมัติบริษัทยังคงเดิม</div>
+                    <div t-if="request.params.get('image_error')" class="alert alert-danger" role="alert">อัปโหลดรูปไม่สำเร็จ กรุณาตรวจสอบชนิดไฟล์และขนาดไม่เกิน 5 MB</div>
+                    <div t-if="error" class="alert alert-danger" role="alert"><t t-esc="error"/></div>
+                    <div t-if="vendor.is_published" class="alert alert-info">ข้อมูลที่แก้ไขจะถูกส่งให้ทีมงานตรวจสอบอีกครั้งก่อนแสดงบนเว็บไซต์</div>
+                    <div t-else="" class="alert alert-secondary">ข้อมูลของคุณกำลังรอทีมงานตรวจสอบและอนุมัติ</div>
+                    <div t-if="vendor.image_1920 or vendor.cover_image or vendor.representative_image" class="portal-image-previews mb-4">
+                        <div t-if="vendor.image_1920"><span>Logo</span><img t-att-src="'/web/image/construction.vendor/%s/image_1920?v=19.0.14&amp;unique=%s' % (vendor.id, vendor.write_date)" t-att-alt="vendor.name"/></div>
+                        <div t-if="vendor.cover_image"><span>Cover</span><img t-att-src="'/web/image/construction.vendor/%s/cover_image?v=19.0.14&amp;unique=%s' % (vendor.id, vendor.write_date)" t-att-alt="vendor.name"/></div>
+                        <div t-if="vendor.representative_image"><span>ผู้ติดต่อ</span><img t-att-src="'/web/image/construction.vendor/%s/representative_image?v=19.0.14&amp;unique=%s' % (vendor.id, vendor.write_date)" t-att-alt="vendor.contact_name or vendor.name"/></div>
+                    </div>
+                    <p class="mb-3"><a class="btn btn-outline-primary" href="/my/vendor/products">จัดการสินค้าที่ต้องการขาย</a></p>
+                    <form action="/my/vendor/images/save" method="post" enctype="multipart/form-data" class="vendor-register-form mb-4">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <h2 class="h5">เปลี่ยนรูปภาพ</h2>
+                        <p class="text-muted">การเปลี่ยนโลโก้ รูปหน้าปก หรือรูปผู้ติดต่อ จะไม่ทำให้สถานะอนุมัติบริษัทเปลี่ยน</p>
+                        <div class="row g-3">
+                            <div class="col-md-4"><label class="form-label" for="profile-image">โลโก้บริษัท</label><input id="profile-image" class="form-control" name="image" type="file" accept="image/*"/><div class="form-text">ไม่เกิน 5 MB</div></div>
+                            <div class="col-md-4"><label class="form-label" for="profile-cover">รูปหน้าปกบริษัท</label><input id="profile-cover" class="form-control" name="cover_image" type="file" accept="image/*"/><div class="form-text">ไม่เกิน 5 MB</div></div>
+                            <div class="col-md-4"><label class="form-label" for="profile-representative">รูปผู้ติดต่อ</label><input id="profile-representative" class="form-control" name="representative_image" type="file" accept="image/*"/><div class="form-text">ไม่เกิน 5 MB</div></div>
+                            <div class="col-12"><button class="btn btn-outline-primary" type="submit">บันทึกรูปภาพ</button></div>
+                        </div>
+                    </form>
+                    <form action="/my/vendor/save" method="post" class="vendor-register-form">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="row g-3">
+                            <div class="col-md-8"><label class="form-label" for="profile-name">ชื่อบริษัท / ตัวแทน *</label><input id="profile-name" class="form-control" name="name" required="required" t-att-value="vendor.name"/></div>
+                            <div class="col-md-4"><label class="form-label" for="profile-province">จังหวัด *</label><select id="profile-province" class="form-select" name="province_id" required="required"><option value="">เลือกจังหวัด</option><t t-foreach="provinces" t-as="province"><option t-att-value="province.id" t-att-selected="vendor.province_id.id == province.id"><t t-esc="province.name"/></option></t></select></div>
+                            <div class="col-md-6"><label class="form-label" for="profile-contact">ผู้ติดต่อ</label><input id="profile-contact" class="form-control" name="contact_name" t-att-value="vendor.contact_name"/></div>
+                            <div class="col-md-6"><label class="form-label" for="profile-hours">เวลาทำการ / เวลาติดต่อ</label><textarea id="profile-hours" class="form-control" name="working_hours" rows="2"><t t-esc="vendor.working_hours"/></textarea></div>
+                            <div class="col-md-6"><label class="form-label" for="profile-phone">เบอร์โทรศัพท์</label><input id="profile-phone" class="form-control" name="contact_phone" type="tel" t-att-value="vendor.contact_phone"/></div>
+                            <div class="col-md-6"><label class="form-label" for="profile-email">อีเมลติดต่อ</label><input id="profile-email" class="form-control" name="contact_email" type="email" t-att-value="vendor.contact_email"/></div>
+                            <div class="col-md-6"><label class="form-label" for="profile-website">เว็บไซต์บริษัท</label><input id="profile-website" class="form-control" name="website_url" type="url" t-att-value="vendor.website_url"/></div>
+                            <div class="col-md-6"><label class="form-label" for="profile-line">ลิงก์ LINE</label><input id="profile-line" class="form-control" name="line_url" type="url" t-att-value="vendor.line_url"/></div>
+                            <div class="col-md-6"><label class="form-label" for="profile-facebook">ลิงก์ Facebook</label><input id="profile-facebook" class="form-control" name="facebook_url" type="url" t-att-value="vendor.facebook_url"/></div>
+                            <div class="col-12"><label class="form-label" for="profile-district">อำเภอ / พื้นที่ให้บริการ</label><input id="profile-district" class="form-control" name="district" t-att-value="vendor.district"/></div>
+                            <div class="col-12"><label class="form-label">หมวดหมู่บริการหรือวัสดุ</label><div class="row g-2"><t t-foreach="categories" t-as="category"><div class="col-md-6"><label class="form-check"><input class="form-check-input" type="checkbox" name="category_ids" t-att-value="category.id" t-att-checked="category in vendor.category_ids"/><span class="form-check-label"><t t-esc="category.name"/></span></label></div></t></div></div>
+                            <div class="col-12"><label class="form-label" for="profile-description">รายละเอียดบริษัท</label><textarea id="profile-description" class="form-control" name="description" rows="5"><t t-esc="vendor.description"/></textarea></div>
+                            <div class="col-12"><button class="btn btn-primary btn-lg" type="submit">บันทึกข้อมูล</button></div>
+                        </div>
+                    </form>
+                    <p class="mt-3"><a href="/my/security">เปลี่ยนรหัสผ่าน</a> · <a href="/my/home">กลับหน้าบัญชี</a></p>
+                </div></div>
+            </div>
+        </t>
+    </template>
+    <template id="portal_vendor_welcome" name="Vendor registration success">
+        <t t-call="portal.portal_layout">
+            <t t-set="title">สมัครตัวแทนสำเร็จ</t>
+            <div class="container py-5 construction-directory">
+                <div class="vendor-welcome-card mx-auto text-center">
+                    <div class="vendor-welcome-icon"><i class="fa fa-clock-o"/></div>
+                    <span class="directory-eyebrow">PENDING REVIEW</span>
+                    <h1 class="h2 mt-2">บัญชีของคุณกำลังรอการอนุมัติ</h1>
+                    <p class="lead mb-2"><strong t-esc="vendor.name"/></p>
+                    <p class="text-muted">ทีมงานกำลังตรวจสอบข้อมูลที่ส่งมา ระหว่างนี้คุณเข้าสู่ระบบได้ แต่ยังจัดการโปรไฟล์หรือสินค้าไม่ได้ เมื่ออนุมัติแล้วจึงจะใช้งานส่วนจัดการได้</p>
+                    <div t-if="vendor.image_1920 or vendor.cover_image or vendor.representative_image" class="portal-image-previews mb-4">
+                        <div t-if="vendor.image_1920"><span>โลโก้บริษัท</span><img t-att-src="'/web/image/construction.vendor/%s/image_1920?v=19.0.14&amp;unique=%s' % (vendor.id, vendor.write_date)" t-att-alt="vendor.name"/></div>
+                        <div t-if="vendor.cover_image"><span>ภาพหน้าปก</span><img t-att-src="'/web/image/construction.vendor/%s/cover_image?v=19.0.14&amp;unique=%s' % (vendor.id, vendor.write_date)" t-att-alt="vendor.name"/></div>
+                        <div t-if="vendor.representative_image"><span>ภาพผู้ติดต่อ</span><img t-att-src="'/web/image/construction.vendor/%s/representative_image?v=19.0.14&amp;unique=%s' % (vendor.id, vendor.write_date)" t-att-alt="vendor.contact_name or vendor.name"/></div>
+                    </div>
+                    <div t-else="" class="alert alert-light">ยังไม่มีภาพแนบมากับข้อมูล หากต้องการเปลี่ยนภาพ กรุณาติดต่อทีมงานระหว่างรออนุมัติ</div>
+                    <a href="/vendors" class="d-inline-block mt-3">กลับไปหน้าค้นหาตัวแทน</a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_vendor_products" name="Manage vendor products">
+        <t t-call="portal.portal_layout">
+            <t t-set="title">จัดการสินค้าของฉัน</t>
+            <div class="container py-4 construction-directory">
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                    <div><h1 class="h2 mb-1">สินค้าที่ต้องการขาย</h1><p class="text-muted mb-0">เพิ่มรูปสินค้า รายละเอียด และราคาเพื่อแสดงในหน้าบริษัท</p></div>
+                    <a href="/my/vendor" class="btn btn-outline-primary">กลับไปข้อมูลบริษัท</a>
+                </div>
+                <div t-if="error" class="alert alert-danger" role="alert"><t t-esc="error"/></div>
+                <div t-if="request.params.get('created') or request.params.get('saved')" class="alert alert-success">บันทึกสินค้าแล้ว สินค้าจะแสดงบนเว็บไซต์ทันทีเมื่อตัวแทนได้รับอนุมัติ</div>
+                <form action="/my/vendor/products/create" method="post" enctype="multipart/form-data" class="vendor-register-form mb-4">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <h2 class="h4">เพิ่มสินค้า</h2>
+                    <div class="row g-3">
+                        <div class="col-md-6"><label class="form-label" for="new-product-name">ชื่อสินค้า *</label><input id="new-product-name" class="form-control" name="name" required="required"/></div>
+                        <div class="col-md-6"><label class="form-label" for="new-product-image">รูปสินค้า *</label><input id="new-product-image" class="form-control" name="images" type="file" accept="image/*" multiple="multiple" required="required"/><div class="form-text">เลือกได้สูงสุด 7 รูป รูปละไม่เกิน 5 MB รูปแรกจะเป็นรูปหลัก</div></div>
+                        <div class="col-md-6"><label class="form-label" for="new-product-category">หมวดหมู่สินค้า</label><select id="new-product-category" class="form-select" name="category_id"><option value="">เลือกหมวดหมู่สินค้า</option><t t-foreach="categories" t-as="category"><option t-att-value="category.id"><t t-esc="category.name"/></option></t></select></div>
+                        <div class="col-md-6"><label class="form-label" for="new-product-price">ราคา / หมายเหตุราคา</label><input id="new-product-price" class="form-control" name="price" placeholder="เช่น 250 บาท/ชิ้น หรือสอบถามราคา"/></div>
+                        <div class="col-12"><label class="form-label" for="new-product-description">รายละเอียดสินค้า</label><textarea id="new-product-description" class="form-control" name="description" rows="3"></textarea></div>
+                        <div class="col-12"><button class="btn btn-primary" type="submit">เพิ่มสินค้าและเผยแพร่</button></div>
+                    </div>
+                </form>
+                <h2 class="h4 mb-3">รายการสินค้าของฉัน</h2>
+                <div t-if="not products" class="directory-empty p-4 text-center">ยังไม่มีสินค้า เพิ่มสินค้าแรกของคุณได้จากแบบฟอร์มด้านบน</div>
+                <div t-foreach="products" t-as="product" class="vendor-product-manage-card mb-3">
+                    <form t-att-action="'/my/vendor/products/%s/save' % product.id" method="post" enctype="multipart/form-data" class="row g-3 align-items-start">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="col-md-3">
+                            <div class="vendor-product-manage-gallery">
+                                <img t-if="product.image_1920" t-att-src="'/web/image/construction.vendor.product/%s/image_1920?v=19.0.15&amp;unique=%s' % (product.id, product.write_date)" t-att-alt="product.name"/>
+                                <img t-foreach="product.image_ids" t-as="gallery_image" t-att-src="'/web/image/construction.vendor.product.image/%s/image_1920?v=19.0.15&amp;unique=%s' % (gallery_image.id, gallery_image.write_date)" t-att-alt="product.name"/>
+                            </div>
+                            <p class="small text-muted mt-2 mb-1"><t t-esc="product.image_count"/>/7 รูป · เพิ่มได้อีก <t t-esc="7 - product.image_count"/> รูป</p>
+                            <input class="form-control mt-2" name="images" type="file" accept="image/*" multiple="multiple"/>
+                            <div class="form-text">เลือกรูปเพื่อเพิ่มในแกลเลอรี รวมแล้วไม่เกิน 7 รูป</div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="alert alert-info py-2">สินค้าแสดงบนเว็บไซต์ทันที เมื่อตัวแทนได้รับอนุมัติ</div>
+                            <div class="row g-3">
+                                <div class="col-md-6"><label class="form-label">ชื่อสินค้า *</label><input class="form-control" name="name" required="required" t-att-value="product.name"/></div>
+                                <div class="col-md-6"><label class="form-label">หมวดหมู่สินค้า</label><select class="form-select" name="category_id"><option value="">เลือกหมวดหมู่สินค้า</option><t t-foreach="categories" t-as="category"><option t-att-value="category.id" t-att-selected="product.category_id.id == category.id"><t t-esc="category.name"/></option></t></select></div>
+                                <div class="col-12"><label class="form-label">ราคา / หมายเหตุราคา</label><input class="form-control" name="price" t-att-value="product.price"/></div>
+                                <div class="col-12"><label class="form-label">รายละเอียดสินค้า</label><textarea class="form-control" name="description" rows="3"><t t-esc="product.description"/></textarea></div>
+                                <div class="col-12"><button class="btn btn-outline-primary" type="submit">บันทึกการแก้ไข</button></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

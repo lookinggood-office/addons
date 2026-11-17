@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="vendor_list" name="Construction Material Representatives">
+        <t t-call="website.layout">
+            <t t-set="title">ค้นหาบริษัทด้านก่อสร้างและวัสดุ</t>
+            <div id="wrap" class="oe_structure construction-directory">
+                <section t-attf-class="directory-hero py-5 py-lg-6 #{'directory-home-hero' if category_landing else ''}">
+                    <div class="container py-4">
+                        <div class="row align-items-center g-5">
+                            <div t-att-class="'col-lg-12' if category_landing else 'col-lg-7'">
+                                <span class="directory-eyebrow">COMPANY DIRECTORY • THAILAND</span>
+                                <h1 class="display-4 fw-bold mt-3">ค้นหาบริษัทก่อสร้าง<br/><span class="directory-accent">และวัสดุใกล้คุณ</span></h1>
+                                <p class="lead mt-3 mb-0"><t t-if="category_landing">เลือกหมวดหมู่ที่สนใจก่อน แล้วค่อยค้นหาบริษัทหรือกรองตามพื้นที่</t><t t-else="">ค้นหาบริษัทและตัวแทนตามจังหวัดและประเภทบริการหรือสินค้า</t></p>
+                            </div>
+                            <div t-if="not category_landing" class="col-lg-5">
+                                <div class="directory-search-card shadow-lg">
+                                    <h2 class="h4 mb-3">ค้นหาบริษัทและตัวแทน</h2>
+                                    <form action="/vendors" method="get" class="row g-3">
+                                        <div class="col-12"><label class="form-label" for="vendor-search">บริการ สินค้า หรือชื่อบริษัท</label><input id="vendor-search" type="search" name="q" class="form-control form-control-lg" t-att-value="search_term" placeholder="เช่น ออกแบบบ้าน เหล็ก ปูน"/></div>
+                                        <div class="col-12"><label class="form-label" for="province-filter">จังหวัด</label><select id="province-filter" name="province_id" class="form-select form-select-lg"><option value="">ทุกจังหวัด</option><t t-foreach="provinces" t-as="province"><option t-att-value="province.id" t-att-selected="province.id == selected_province_id"><t t-esc="province.name"/></option></t></select></div>
+                                        <div class="col-12"><label class="form-label" for="category-filter">หมวดหมู่</label><select id="category-filter" name="category_id" class="form-select form-select-lg"><option value="">ทุกหมวดหมู่</option><t t-foreach="categories" t-as="category"><option t-att-value="category.id" t-att-selected="category.id == selected_category_id"><t t-esc="category.name"/></option></t></select></div>
+                                        <div class="col-12 d-grid"><button class="btn btn-primary btn-lg" type="submit">ค้นหา</button></div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section t-if="category_landing" class="container category-entry-section py-5">
+                    <div class="mb-4"><span class="directory-eyebrow">BROWSE BY CATEGORY</span><h2 class="h2 mb-1 mt-1">เลือกหมวดหมู่</h2><p class="text-muted mb-0">เลือกดูบริษัทตามบริการหรือวัสดุที่ต้องการ</p></div>
+                    <div class="row g-3 g-lg-4">
+                        <t t-foreach="categories" t-as="category">
+                            <div class="col-6 col-lg-3">
+                                <a class="category-entry-card" t-att-href="'/vendors?category_id=%s' % category.id">
+                                    <img t-if="category.image_1920" class="category-entry-image" t-att-src="'/web/image/construction.vendor.category/%s/image_1920' % category.id" t-att-alt="category.name" loading="lazy"/>
+                                    <span class="category-entry-icon"><i class="fa fa-building-o"/></span>
+                                    <span class="category-entry-name"><t t-esc="category.name"/></span>
+                                    <span class="category-entry-link">ดูบริษัท <i class="fa fa-arrow-right ms-1"/></span>
+                                </a>
+                            </div>
+                        </t>
+                    </div>
+                </section>
+                <section t-if="sponsored_vendors and not category_landing" class="recommended-strip py-5">
+                    <div class="container">
+                        <div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-4">
+                            <div><span class="directory-eyebrow">RECOMMENDED</span><h2 class="h2 mb-0 mt-1">ตัวแทนแนะนำ</h2></div>
+                        </div>
+                        <div class="row g-4">
+                            <t t-foreach="sponsored_vendors" t-as="vendor">
+                                <div class="col-md-6 col-xl-4">
+                                    <article class="vendor-card vendor-card-recommended h-100">
+                                        <a t-att-href="'/vendors/%s' % vendor.id" class="vendor-card-link">
+                                            <div class="vendor-card-top">
+                                                <img t-if="vendor.cover_image or vendor.image_1920" class="vendor-card-cover" t-att-src="('/web/image/construction.vendor/%s/cover_image?v=19.0.14&amp;unique=%s' % (vendor.id, vendor.write_date)) if vendor.cover_image else ('/web/image/construction.vendor/%s/image_1920?v=19.0.14&amp;unique=%s' % (vendor.id, vendor.write_date))" t-att-alt="vendor.name" loading="lazy"/>
+                                                <div class="vendor-logo"><img t-if="vendor.image_1920" t-att-src="'/web/image/construction.vendor/%s/image_1920?v=19.0.14&amp;unique=%s' % (vendor.id, vendor.write_date)" t-att-alt="vendor.name"/><span t-else="" t-esc="vendor.name[:1]"/></div>
+                                                <span class="badge recommended-badge">แนะนำ</span>
+                                            </div>
+                                            <h3 class="h5 mt-3 mb-2"><t t-esc="vendor.name"/></h3>
+                                            <p t-if="vendor.image_credit_url" class="vendor-photo-credit mb-2">ภาพประกอบ · <a t-att-href="vendor.image_credit_url" target="_blank" rel="noopener noreferrer"><t t-esc="vendor.image_credit"/> · Unsplash</a></p>
+                                            <p class="text-muted mb-2"><i class="fa fa-map-marker me-2"/><t t-esc="vendor.province_id.name"/><t t-if="vendor.district"> · <t t-esc="vendor.district"/></t></p>
+                                            <p t-if="vendor.category_ids" class="vendor-tags"><t t-foreach="vendor.category_ids" t-as="category"><span class="vendor-tag"><t t-esc="category.name"/></span></t></p>
+                                            <div t-if="vendor.description" class="vendor-summary"><t t-out="vendor.description"/></div>
+                                        </a>
+                                        <div class="vendor-card-footer"><a t-if="vendor.contact_phone" t-att-href="'tel:%s' % vendor.contact_phone" class="btn btn-sm btn-outline-secondary"><i class="fa fa-phone me-1"/>โทรสอบถาม</a><a t-att-href="'/vendors/%s' % vendor.id" class="btn btn-sm btn-link">ดูรายละเอียด <i class="fa fa-arrow-right ms-1"/></a></div>
+                                    </article>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </section>
+                <section t-if="not category_landing" class="container py-5">
+                    <div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-4">
+                        <div><span class="directory-eyebrow text-uppercase">DIRECTORY</span><h2 class="h2 mb-0 mt-1"><t t-if="selected_category_id">ผลการค้นหาในหมวดหมู่</t><t t-else="">บริษัทและตัวแทน</t></h2></div>
+                        <a href="/vendors/register" class="btn btn-outline-primary">ลงทะเบียนเป็นตัวแทน</a>
+                    </div>
+                    <a t-if="selected_category_id" href="/vendors" class="category-back-link mb-4"><i class="fa fa-arrow-left me-2"/>กลับไปเลือกหมวดหมู่</a>
+                    <t t-if="sponsored_vendors or vendors">
+                      <t t-if="vendors">
+                        <div class="row g-4">
+                            <t t-foreach="vendors" t-as="vendor">
+                                <div class="col-md-6 col-xl-4">
+                                    <article class="vendor-card h-100">
+                                        <a t-att-href="'/vendors/%s' % vendor.id" class="vendor-card-link">
+                                            <div class="vendor-card-top">
+                                                <img t-if="vendor.cover_image or vendor.image_1920" class="vendor-card-cover" t-att-src="('/web/image/construction.vendor/%s/cover_image?v=19.0.14&amp;unique=%s' % (vendor.id, vendor.write_date)) if vendor.cover_image else ('/web/image/construction.vendor/%s/image_1920?v=19.0.14&amp;unique=%s' % (vendor.id, vendor.write_date))" t-att-alt="vendor.name" loading="lazy"/>
+                                                <div class="vendor-logo"><img t-if="vendor.image_1920" t-att-src="'/web/image/construction.vendor/%s/image_1920?v=19.0.14&amp;unique=%s' % (vendor.id, vendor.write_date)" t-att-alt="vendor.name"/><span t-else="" t-esc="vendor.name[:1]"/></div>
+                                                <span t-if="vendor.featured" class="badge text-bg-warning">แนะนำ</span>
+                                            </div>
+                                            <h3 class="h5 mt-3 mb-2"><t t-esc="vendor.name"/></h3>
+                                            <p t-if="vendor.image_credit_url" class="vendor-photo-credit mb-2">ภาพประกอบ · <a t-att-href="vendor.image_credit_url" target="_blank" rel="noopener noreferrer"><t t-esc="vendor.image_credit"/> · Unsplash</a></p>
+                                            <p class="text-muted mb-2"><i class="fa fa-map-marker me-2"/><t t-esc="vendor.province_id.name"/><t t-if="vendor.district"> · <t t-esc="vendor.district"/></t></p>
+                                            <p t-if="vendor.category_ids" class="vendor-tags"><t t-foreach="vendor.category_ids" t-as="category"><span class="vendor-tag"><t t-esc="category.name"/></span></t></p>
+                                            <div t-if="vendor.description" class="vendor-summary"><t t-out="vendor.description"/></div>
+                                        </a>
+                                        <div class="vendor-card-footer"><a t-if="vendor.contact_phone" t-att-href="'tel:%s' % vendor.contact_phone" class="btn btn-sm btn-outline-secondary"><i class="fa fa-phone me-1"/>โทรสอบถาม</a><a t-att-href="'/vendors/%s' % vendor.id" class="btn btn-sm btn-link">ดูรายละเอียด <i class="fa fa-arrow-right ms-1"/></a></div>
+                                    </article>
+                                </div>
+                            </t>
+                        </div>
+                      </t>
+                    </t>
+                    <div t-if="not sponsored_vendors and not vendors" class="directory-empty text-center py-5 px-3">
+                        <div class="empty-icon"><i class="fa fa-building-o"/></div>
+                        <h3 class="h4 mt-3">กำลังรวบรวมข้อมูลบริษัทและตัวแทน</h3>
+                        <p class="text-muted mb-4">ยังไม่มีรายการที่ตรงกับการค้นหา สมัครเป็นตัวแทนเพื่อให้ลูกค้าค้นหาบริษัทของคุณได้</p>
+                        <a href="/vendors/register" class="btn btn-primary">ลงทะเบียนตัวแทน</a>
+                    </div>
+                </section>
+                <section class="directory-join py-5"><div class="container d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3"><div><h2 class="h3 mb-1">อยากให้บริษัทของคุณเป็นตัวแทนแนะนำ?</h2><p class="mb-0">สอบถามทีมงานเกี่ยวกับการขึ้นแนะนำบริษัทบนเว็บไซต์</p></div><a href="/contactus" class="btn btn-light btn-lg">สอบถามการแนะนำบริษัท <i class="fa fa-arrow-right ms-2"/></a></div></section>
+            </div>
+        </t>
+    </template>
+
+    <template id="vendor_detail" name="Construction Material Representative">
+        <t t-call="website.layout">
+            <t t-set="title"><t t-esc="vendor.name"/> | บริษัทก่อสร้างและวัสดุ</t>
+            <div id="wrap" class="container py-5 construction-directory">
+                <nav aria-label="breadcrumb" class="mb-4"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="/vendors">ค้นหาตัวแทน</a></li><li class="breadcrumb-item active"><t t-esc="vendor.name"/></li></ol></nav>
+                <div class="row g-5">
+                    <div class="col-lg-8">
+                        <div class="vendor-detail-heading d-flex gap-4 align-items-center mb-4">
+                            <div class="vendor-logo vendor-logo-large"><img t-if="vendor.image_1920" t-att-src="'/web/image/construction.vendor/%s/image_1920?v=19.0.14&amp;unique=%s' % (vendor.id, vendor.write_date)" t-att-alt="vendor.name"/><span t-else="" t-esc="vendor.name[:1]"/></div>
+                            <div><span class="directory-eyebrow">บริษัทและตัวแทน</span><h1 class="h2 mt-1 mb-2"><t t-esc="vendor.name"/></h1><p class="text-muted mb-0"><i class="fa fa-map-marker me-2"/><t t-esc="vendor.province_id.name"/><t t-if="vendor.district"> · <t t-esc="vendor.district"/></t></p></div>
+                        </div>
+                        <div t-if="vendor.category_ids" class="vendor-tags mb-4"><t t-foreach="vendor.category_ids" t-as="category"><span class="vendor-tag"><t t-esc="category.name"/></span></t></div>
+                        <section t-if="vendor.description" class="vendor-description"><h2 class="h4">เกี่ยวกับบริษัท</h2><div><t t-out="vendor.description"/></div></section>
+                        <section t-if="vendor.street or vendor.zip" class="mt-4"><h2 class="h5">ที่อยู่</h2><p><t t-esc="vendor.street"/><br t-if="vendor.street and vendor.zip"/><t t-esc="vendor.zip"/> <t t-esc="vendor.province_id.name"/></p></section>
+                    </div>
+                    <aside class="col-lg-4"><div class="vendor-contact-card"><h2 class="h4">ติดต่อบริษัท</h2><p t-if="vendor.contact_name" class="mb-2"><i class="fa fa-user me-2"/><t t-esc="vendor.contact_name"/></p><p t-if="vendor.contact_phone" class="mb-2"><i class="fa fa-phone me-2"/><a t-att-href="'tel:%s' % vendor.contact_phone"><t t-esc="vendor.contact_phone"/></a></p><p t-if="vendor.contact_email" class="mb-2"><i class="fa fa-envelope me-2"/><a t-att-href="'mailto:%s' % vendor.contact_email"><t t-esc="vendor.contact_email"/></a></p><p t-if="vendor.website_url" class="mb-3"><i class="fa fa-globe me-2"/><a t-att-href="vendor.website_url" target="_blank" rel="noopener noreferrer"><t t-esc="vendor.website_url"/></a></p><div class="vendor-social-actions"><a t-if="vendor.line_url" t-att-href="vendor.line_url" class="btn btn-line" target="_blank" rel="noopener noreferrer"><i class="fa fa-comment me-2"/>แชทผ่าน LINE</a><a t-if="vendor.facebook_url" t-att-href="vendor.facebook_url" class="btn btn-facebook" target="_blank" rel="noopener noreferrer"><i class="fa fa-facebook me-2"/>ติดต่อผ่าน Facebook</a></div><p t-if="vendor.line_url or vendor.facebook_url" class="small text-muted mt-3 mb-0">การสนทนาจะดำเนินต่อบนแพลตฟอร์มภายนอก เว็บไซต์นี้ไม่ได้จัดเก็บประวัติแชต</p></div></aside>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="vendor_register" name="Register as a Representative">
+        <t t-call="website.layout">
+            <t t-set="title">ลงทะเบียนตัวแทนวัสดุก่อสร้าง</t>
+            <div id="wrap" class="container py-5 construction-directory">
+                <div class="row justify-content-center"><div class="col-lg-8"><span class="directory-eyebrow">PARTNER DIRECTORY</span><h1 class="h2 mt-2">ลงทะเบียนบริษัทหรือตัวแทน</h1><p class="text-muted">ข้อมูลจะรอทีมงานตรวจสอบก่อนเผยแพร่บนเว็บไซต์</p>
+                    <div t-if="error" class="alert alert-danger" role="alert"><t t-esc="error"/></div>
+                    <form action="/vendors/register" method="post" enctype="multipart/form-data" class="vendor-register-form">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="row g-3">
+                            <div class="col-md-6"><label class="form-label" for="account-username">Username *</label><input id="account-username" class="form-control" name="username" required="required" minlength="4" maxlength="32" pattern="[a-zA-Z0-9._-]+" autocomplete="username" t-att-value="form.get('username', '')"/><div class="form-text">4–32 ตัว ใช้ a-z, 0-9, จุด ขีดกลาง หรือขีดล่าง</div></div>
+                            <div class="col-md-6"><label class="form-label" for="account-email">อีเมลบัญชี *</label><input id="account-email" class="form-control" name="account_email" type="email" required="required" autocomplete="email" t-att-value="form.get('account_email', '')"/><div class="form-text">ใช้ประกอบบัญชีและแยกจากอีเมลติดต่อบริษัท</div></div>
+                            <div class="col-md-6"><label class="form-label" for="account-password">Password *</label><input id="account-password" class="form-control" name="password" type="password" required="required" minlength="10" autocomplete="new-password"/></div>
+                            <div class="col-md-6"><label class="form-label" for="account-password-confirm">ยืนยัน Password *</label><input id="account-password-confirm" class="form-control" name="password_confirm" type="password" required="required" minlength="10" autocomplete="new-password"/></div>
+                            <div class="col-md-4"><label class="form-label" for="company-image">โลโก้บริษัท</label><input id="company-image" class="form-control" name="image" type="file" accept="image/*"/><div class="form-text">ไม่เกิน 5 MB</div></div>
+                            <div class="col-md-4"><label class="form-label" for="company-cover">รูปหน้าปกบริษัท</label><input id="company-cover" class="form-control" name="cover_image" type="file" accept="image/*"/><div class="form-text">ไม่เกิน 5 MB</div></div>
+                            <div class="col-md-4"><label class="form-label" for="representative-image">รูปผู้ติดต่อ</label><input id="representative-image" class="form-control" name="representative_image" type="file" accept="image/*"/><div class="form-text">ไม่เกิน 5 MB</div></div>
+                            <div class="col-md-8"><label class="form-label" for="company-name">ชื่อบริษัท / ตัวแทน *</label><input id="company-name" class="form-control" name="name" required="required" t-att-value="form.get('name', '')"/></div>
+                            <div class="col-md-4"><label class="form-label" for="province">จังหวัด *</label><select id="province" class="form-select" name="province_id" required="required"><option value="">เลือกจังหวัด</option><t t-foreach="provinces" t-as="province"><option t-att-value="province.id" t-att-selected="str(form.get('province_id', '')) == str(province.id)"><t t-esc="province.name"/></option></t></select></div>
+                            <div class="col-md-6"><label class="form-label" for="contact-person">ผู้ติดต่อ</label><input id="contact-person" class="form-control" name="contact_name" t-att-value="form.get('contact_name', '')"/></div>
+                            <div class="col-md-6"><label class="form-label" for="business-hours">เวลาทำการ / เวลาติดต่อ</label><textarea id="business-hours" class="form-control" name="working_hours" rows="2"><t t-esc="form.get('working_hours', '')"/></textarea></div>
+                            <div class="col-md-6"><label class="form-label" for="phone">เบอร์โทรศัพท์</label><input id="phone" class="form-control" name="contact_phone" type="tel" t-att-value="form.get('contact_phone', '')"/></div>
+                            <div class="col-md-6"><label class="form-label" for="company-contact-email">อีเมลติดต่อบริษัท</label><input id="company-contact-email" class="form-control" name="contact_email" type="email" autocomplete="off" t-att-value="form.get('contact_email', '')"/></div>
+                            <div class="col-md-6"><label class="form-label" for="website">เว็บไซต์บริษัท</label><input id="website" class="form-control" name="website_url" type="url" placeholder="https://" t-att-value="form.get('website_url', '')"/></div>
+                            <div class="col-md-6"><label class="form-label" for="line-url">ลิงก์ LINE</label><input id="line-url" class="form-control" name="line_url" type="url" placeholder="https://line.me/..." t-att-value="form.get('line_url', '')"/></div>
+                            <div class="col-md-6"><label class="form-label" for="facebook-url">ลิงก์ Facebook</label><input id="facebook-url" class="form-control" name="facebook_url" type="url" placeholder="https://facebook.com/..." t-att-value="form.get('facebook_url', '')"/></div>
+                            <div class="col-12"><label class="form-label" for="district">อำเภอ / พื้นที่ให้บริการ</label><input id="district" class="form-control" name="district" t-att-value="form.get('district', '')"/></div>
+                            <div class="col-12"><label class="form-label">หมวดหมู่บริการหรือวัสดุ</label><div class="row g-2"><t t-foreach="categories" t-as="category"><div class="col-md-6"><label class="form-check"><input class="form-check-input" type="checkbox" name="category_ids" t-att-value="category.id"/><span class="form-check-label"><t t-esc="category.name"/></span></label></div></t></div></div>
+                            <div class="col-12"><div class="form-check consent-box"><input id="publication-consent" class="form-check-input" type="checkbox" name="publication_consent" value="1" required="required"/><label class="form-check-label" for="publication-consent">ข้าพเจ้ายินยอมให้เผยแพร่ชื่อบริษัท รูปภาพ ข้อมูลพื้นที่ให้บริการ และช่องทางติดต่อที่ระบุ เพื่อแสดงในเว็บไซต์ หลังจากทีมงานตรวจสอบและอนุมัติแล้ว โดยอ่าน <a href="/privacy-notice" target="_blank" rel="noopener noreferrer">ประกาศความเป็นส่วนตัว</a> แล้ว</label></div></div>
+                            <div class="col-12"><button class="btn btn-primary btn-lg" type="submit">ส่งข้อมูลให้ตรวจสอบ</button></div>
+                        </div>
+                    </form>
+                </div></div>
+            </div>
+        </t>
+    </template>
+
+    <template id="privacy_notice" name="Privacy Notice">
+        <t t-call="website.layout">
+            <t t-set="title">ประกาศความเป็นส่วนตัว</t>
+            <div id="wrap" class="container py-5 construction-directory privacy-notice">
+                <div class="row justify-content-center"><div class="col-lg-9">
+                    <span class="directory-eyebrow">PRIVACY NOTICE</span>
+                    <h1 class="h2 mt-2">ประกาศความเป็นส่วนตัว</h1>
+                    <div class="alert alert-warning mt-4" role="alert"><strong>ฉบับร่าง:</strong> ก่อนเปิดเว็บไซต์จริง ต้องเติมชื่อผู้ควบคุมข้อมูล ช่องทางติดต่อ วัตถุประสงค์ ระยะเวลาเก็บรักษา และรายละเอียดสิทธิของเจ้าของข้อมูลให้ครบถ้วน</div>
+                    <section class="privacy-notice-section"><h2 class="h4">ข้อมูลที่เก็บ</h2><p>แบบฟอร์มลงทะเบียนอาจเก็บชื่อบริษัท รูปภาพ พื้นที่ให้บริการ ชื่อผู้ติดต่อ เบอร์โทรศัพท์ อีเมล เว็บไซต์ และลิงก์ช่องทางติดต่อที่ผู้สมัครส่งมา</p></section>
+                    <section class="privacy-notice-section"><h2 class="h4">ข้อมูลบัญชีผู้ใช้</h2><p>ระบบเก็บ Username และอีเมลบัญชีเพื่อใช้กับบัญชีสำหรับจัดการข้อมูลตัวแทน รหัสผ่านใช้สำหรับยืนยันตัวตนและไม่แสดงเป็นข้อความอ่านได้ อีเมลบัญชีแยกจากอีเมลติดต่อบริษัทซึ่งผู้สมัครเลือกให้แสดงบนเว็บไซต์ได้ การกู้คืนรหัสผ่านทางอีเมลต้องตั้งค่าระบบส่งอีเมลก่อน</p></section>
+                    <section class="privacy-notice-section"><h2 class="h4">การใช้และการเผยแพร่ข้อมูล</h2><p>ข้อมูลใช้ตรวจสอบคำขอลงทะเบียนและจัดทำหน้ารายการบริษัทบนเว็บไซต์ โดยรายการจะแสดงต่อสาธารณะหลังทีมงานอนุมัติ ผู้สมัครเลือกยินยอมให้เผยแพร่ข้อมูลที่ระบุในแบบฟอร์ม</p></section>
+                    <section class="privacy-notice-section"><h2 class="h4">ติดต่อเกี่ยวกับข้อมูลส่วนบุคคล</h2><p>กรุณาติดต่อผู้ดูแลเว็บไซต์ผ่านหน้า <a href="/contactus">ติดต่อเรา</a> เพื่อสอบถามหรือขอแก้ไขข้อมูล ทั้งนี้ต้องระบุช่องทางติดต่อผู้ควบคุมข้อมูลจริงก่อนเปิดใช้งาน</p></section>
+                </div></div>
+            </div>
+        </t>
+    </template>
+
+    <template id="vendor_register_success" name="Representative Registration Received">
+        <t t-call="website.layout">
+            <t t-set="title">รับข้อมูลลงทะเบียนแล้ว</t>
+            <div id="wrap" class="container py-5 construction-directory"><div class="directory-empty text-center py-5"><div class="empty-icon"><i class="fa fa-check"/></div><h1 class="h2 mt-3">รับข้อมูลเรียบร้อยแล้ว</h1><p class="text-muted">ทีมงานจะตรวจสอบข้อมูลก่อนเผยแพร่บนเว็บไซต์</p><a class="btn btn-primary" href="/vendors">กลับไปค้นหาตัวแทน</a></div></div>
+        </t>
+    </template>
+</odoo>

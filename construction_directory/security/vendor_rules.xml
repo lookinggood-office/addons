@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="construction_vendor_public_rule" model="ir.rule">
+        <field name="name">Public users can read published vendor listings</field>
+        <field name="model_id" ref="model_construction_vendor"/>
+        <field name="groups" eval="[(4, ref('base.group_public'))]"/>
+        <field name="domain_force">[('is_published', '=', True)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="construction_vendor_portal_rule" model="ir.rule">
+        <field name="name">Portal users can manage their own representative listing</field>
+        <field name="model_id" ref="model_construction_vendor"/>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="construction_vendor_product_public_rule" model="ir.rule">
+        <field name="name">Public users can read approved products from published vendors</field>
+        <field name="model_id" ref="model_construction_vendor_product"/>
+        <field name="groups" eval="[(4, ref('base.group_public'))]"/>
+        <field name="domain_force">[('active', '=', True), ('is_published', '=', True), ('vendor_id.is_published', '=', True)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="construction_vendor_product_portal_rule" model="ir.rule">
+        <field name="name">Portal users can manage their own products</field>
+        <field name="model_id" ref="model_construction_vendor_product"/>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="domain_force">[('vendor_id.user_id', '=', user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="construction_vendor_product_image_public_rule" model="ir.rule">
+        <field name="name">Public users can read photos of approved products</field>
+        <field name="model_id" ref="model_construction_vendor_product_image"/>
+        <field name="groups" eval="[(4, ref('base.group_public'))]"/>
+        <field name="domain_force">[('product_id.is_published', '=', True), ('product_id.vendor_id.is_published', '=', True)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="construction_vendor_product_image_portal_rule" model="ir.rule">
+        <field name="name">Portal users can manage photos of their own products</field>
+        <field name="model_id" ref="model_construction_vendor_product_image"/>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="domain_force">[('product_id.vendor_id.user_id', '=', user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="construction_vendor_category_public_rule" model="ir.rule">
+        <field name="name">Public users can read active vendor categories</field>
+        <field name="model_id" ref="model_construction_vendor_category"/>
+        <field name="groups" eval="[(4, ref('base.group_public'))]"/>
+        <field name="domain_force">[('active', '=', True)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="construction_vendor_category_portal_rule" model="ir.rule">
+        <field name="name">Portal users can read active representative categories</field>
+        <field name="model_id" ref="model_construction_vendor_category"/>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="domain_force">[('active', '=', True)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+</odoo>
