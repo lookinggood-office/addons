@@ -4,7 +4,7 @@
     "version": "19.0.20.0.0",
     "category": "Website",
     "license": "LGPL-3",
-    "author": "Construction Directory Project",
+    "author": "LookingGood Tech",
     "application": True,
     "installable": True,
     "post_init_hook": "post_init_hook",
