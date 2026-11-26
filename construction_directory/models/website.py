@@ -10,9 +10,9 @@ class Website(models.Model):
     @api.model
     def setup_construction_directory_navigation(self):
         website = self.env.ref("website.default_website")
-        with file_open("construction_directory/static/description/logo.png", "rb") as logo_file:
+        with file_open("construction_directory/static/description/logo.svg", "rb") as logo_file:
             logo = base64.b64encode(logo_file.read())
-        with file_open("construction_directory/static/description/favicon.png", "rb") as favicon_file:
+        with file_open("construction_directory/static/description/favicon.svg", "rb") as favicon_file:
             favicon = base64.b64encode(favicon_file.read())
         website.write(
             {
