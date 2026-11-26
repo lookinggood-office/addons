@@ -20,6 +20,16 @@
         <field name="perm_create" eval="False"/>
         <field name="perm_unlink" eval="False"/>
     </record>
+    <record id="construction_vendor_profile_revision_portal_rule" model="ir.rule">
+        <field name="name">Portal users can access their own pending profile changes</field>
+        <field name="model_id" ref="model_construction_vendor_profile_revision"/>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="domain_force">[('vendor_id.user_id', '=', user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
     <record id="construction_vendor_product_public_rule" model="ir.rule">
         <field name="name">Public users can read approved products from published vendors</field>
         <field name="model_id" ref="model_construction_vendor_product"/>

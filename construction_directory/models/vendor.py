@@ -36,7 +36,7 @@ class ConstructionVendorProduct(models.Model):
     active = fields.Boolean(default=True)
     is_published = fields.Boolean(
         string="Published", default=True,
-        help="Products from approved representatives are published immediately.",
+        help="Products stay unpublished until the representative is approved; approved vendors' products publish immediately.",
     )
 
     @api.depends("image_1920", "image_ids")
@@ -51,7 +51,7 @@ class ConstructionVendorProduct(models.Model):
             allowed_fields = {"name", "category_id", "image_1920", "description", "price"}
             if set(values) - allowed_fields:
                 raise AccessError("Portal users may only update their own product details.")
-            values = dict(values, is_published=True)
+            values = dict(values, is_published=all(self.mapped("vendor_id.is_published")))
         return super().write(values)
 
     @api.model_create_multi
@@ -59,7 +59,13 @@ class ConstructionVendorProduct(models.Model):
         if self.env.user.has_group("base.group_portal") and not self.env.user.has_group(
             "base.group_user"
         ):
-            vals_list = [dict(values, is_published=True) for values in vals_list]
+            vendor_ids = {values.get("vendor_id") for values in vals_list if values.get("vendor_id")}
+            vendors = self.env["construction.vendor"].browse(vendor_ids).exists()
+            published_by_vendor = {vendor.id: vendor.is_published for vendor in vendors}
+            vals_list = [
+                dict(values, is_published=published_by_vendor.get(values.get("vendor_id"), False))
+                for values in vals_list
+            ]
         return super().create(vals_list)
 
 
@@ -143,6 +149,17 @@ class ConstructionVendor(models.Model):
         default=False,
         help="Only approved and published listings appear on the public website.",
     )
+    profile_revision_ids = fields.One2many(
+        "construction.vendor.profile.revision", "vendor_id", string="Pending profile changes"
+    )
+    profile_revision_pending = fields.Boolean(
+        string="Profile changes awaiting review", compute="_compute_profile_revision_pending", store=True
+    )
+
+    @api.depends("profile_revision_ids")
+    def _compute_profile_revision_pending(self):
+        for vendor in self:
+            vendor.profile_revision_pending = bool(vendor.profile_revision_ids)
     sequence = fields.Integer(default=10)
 
     @api.constrains("line_url", "facebook_url")
@@ -184,9 +201,74 @@ class ConstructionVendor(models.Model):
             if set(values) - allowed_fields:
                 raise AccessError("Portal users may only update their own public profile fields.")
             image_only_fields = {"image_1920", "cover_image", "representative_image"}
-            if set(values) - image_only_fields:
-                values = dict(values, is_published=False)
+            if self.filtered("is_published") and set(values) - image_only_fields:
+                raise AccessError("Published profile changes must be submitted for review.")
         if values.get("publication_consent"):
             values = dict(values)
             values["publication_consent_date"] = fields.Datetime.now()
-        return super().write(values)
+        was_published = {vendor.id: vendor.is_published for vendor in self}
+        result = super().write(values)
+        if values.get("is_published"):
+            for vendor in self.filtered(lambda item: not was_published.get(item.id)):
+                vendor.product_ids.filtered("active").write({"is_published": True})
+        return result
+
+
+class ConstructionVendorProfileRevision(models.Model):
+    _name = "construction.vendor.profile.revision"
+    _description = "Pending Representative Profile Changes"
+    _order = "write_date desc"
+
+    vendor_id = fields.Many2one("construction.vendor", required=True, index=True, ondelete="cascade")
+    name = fields.Char(required=True)
+    province_id = fields.Many2one("res.country.state", required=True, ondelete="restrict")
+    district = fields.Char()
+    contact_name = fields.Char()
+    working_hours = fields.Text()
+    working_schedule = fields.Text()
+    contact_phone = fields.Char()
+    contact_email = fields.Char()
+    website_url = fields.Char()
+    line_url = fields.Char()
+    facebook_url = fields.Char()
+    description = fields.Html(sanitize=True)
+    category_ids = fields.Many2many(
+        "construction.vendor.category", "construction_vendor_revision_category_rel",
+        "revision_id", "category_id", string="Product categories",
+    )
+    submitted_at = fields.Datetime(default=fields.Datetime.now, readonly=True)
+
+    _vendor_revision_unique = models.Constraint(
+        "UNIQUE(vendor_id)", "Only one pending profile revision is allowed per vendor."
+    )
+
+    def _check_reviewer(self):
+        if not self.env.user.has_group("base.group_user"):
+            raise AccessError("Only internal users can review profile changes.")
+
+    def action_approve(self):
+        self._check_reviewer()
+        for revision in self:
+            vendor = revision.vendor_id
+            vendor.write({
+                "name": revision.name,
+                "province_id": revision.province_id.id,
+                "district": revision.district,
+                "contact_name": revision.contact_name,
+                "working_hours": revision.working_hours,
+                "working_schedule": revision.working_schedule,
+                "contact_phone": revision.contact_phone,
+                "contact_email": revision.contact_email,
+                "website_url": revision.website_url,
+                "line_url": revision.line_url,
+                "facebook_url": revision.facebook_url,
+                "description": revision.description,
+                "category_ids": [(6, 0, revision.category_ids.ids)],
+            })
+        self.unlink()
+        return True
+
+    def action_reject(self):
+        self._check_reviewer()
+        self.unlink()
+        return True

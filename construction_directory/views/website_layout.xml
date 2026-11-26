@@ -8,6 +8,26 @@
             <a href="/contactus" class="oe_unremovable btn btn-primary btn_cta d-none" aria-hidden="true" tabindex="-1"/>
         </xpath>
     </template>
+    <template id="warehouse_theme_toggle_desktop" inherit_id="website.template_header_default" name="Website light and dark theme toggle">
+        <xpath expr="//div[@id='o_main_nav']/ul" position="inside">
+            <li class="nav-item">
+                <button type="button" class="warehouse-theme-toggle nav-link btn border-0" data-warehouse-theme-toggle="1" aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">
+                    <i class="fa fa-moon-o" aria-hidden="true"/>
+                    <span data-warehouse-theme-label="1">Dark mode</span>
+                </button>
+            </li>
+        </xpath>
+    </template>
+    <template id="warehouse_theme_toggle_mobile" inherit_id="website.template_header_mobile" name="Mobile website light and dark theme toggle">
+        <xpath expr="//ul[hasclass('o_header_mobile_buttons_wrap')]" position="inside">
+            <li class="nav-item">
+                <button type="button" class="warehouse-theme-toggle nav-link btn p-2 o_not_editable" data-warehouse-theme-toggle="1" aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">
+                    <i class="fa fa-moon-o" aria-hidden="true"/>
+                    <span class="visually-hidden" data-warehouse-theme-label="1">Dark mode</span>
+                </button>
+            </li>
+        </xpath>
+    </template>
     <template id="remove_odoo_brand_promotion" inherit_id="website.layout" name="Remove Odoo footer promotion">
         <xpath expr="//t[@t-call='web.brand_promotion']/.." position="replace"/>
     </template>

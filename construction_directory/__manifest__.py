@@ -1,7 +1,7 @@
 {
     "name": "Construction and Design Directory",
     "summary": "Find construction, design, and material representatives by province",
-    "version": "19.0.20.0.0",
+    "version": "19.0.31.0.0",
     "category": "Website",
     "license": "LGPL-3",
     "author": "LookingGood Tech",
@@ -30,7 +30,9 @@
     "assets": {
         "web.assets_frontend": [
             "construction_directory/static/src/css/vendor_directory.css",
+            "construction_directory/static/src/css/website_dark_mode.css",
             "construction_directory/static/src/js/product_image_modal.js",
+            "construction_directory/static/src/js/website_theme_toggle.js",
         ],
     },
 }

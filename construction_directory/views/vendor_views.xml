@@ -4,8 +4,9 @@
         <field name="name">construction.vendor.list</field>
         <field name="model">construction.vendor</field>
         <field name="arch" type="xml">
-            <list string="ตัวแทนวัสดุก่อสร้าง" default_order="featured desc, sequence, name">
+            <list string="ตัวแทนวัสดุก่อสร้าง" default_order="profile_revision_pending desc, is_published, create_date desc, name" decoration-warning="not is_published" decoration-info="profile_revision_pending">
                 <field name="sequence" widget="handle"/>
+                <field name="image_1920" string="โลโก้" widget="image" optional="hide"/>
                 <field name="name"/>
                 <field name="province_id"/>
                 <field name="category_ids" widget="many2many_tags"/>
@@ -13,9 +14,10 @@
                 <field name="line_url" optional="hide"/>
                 <field name="facebook_url" optional="hide"/>
                 <field name="publication_consent" optional="hide"/>
+                <field name="profile_revision_pending" string="แก้ไขรอตรวจ"/>
                 <field name="featured" widget="boolean_toggle"/>
-                <field name="is_sponsored" widget="boolean_toggle"/>
-                <field name="is_published" widget="boolean_toggle"/>
+                <field name="is_sponsored" string="ตัวแทนแนะนำ" widget="boolean_toggle" optional="hide"/>
+                <field name="is_published" string="เผยแพร่" widget="boolean_toggle"/>
             </list>
         </field>
     </record>
@@ -31,35 +33,118 @@
                     <div class="oe_button_box" name="button_box"/>
                     <field name="image_1920" widget="image" class="oe_avatar"/>
                     <div class="oe_title"><label for="name"/><h1><field name="name" placeholder="ชื่อบริษัทหรือตัวแทน"/></h1></div>
-                    <group>
-                        <group string="บัญชีผู้ใช้"><field name="user_id" readonly="1"/></group>
-                        <group string="พื้นที่และสินค้า">
-                            <field name="cover_image" widget="image"/>
-                            <field name="representative_image" widget="image"/>
-                            <field name="province_id" options="{'no_create': True}"/>
-                            <field name="district"/>
-                            <field name="street"/>
-                            <field name="zip"/>
-                            <field name="category_ids" widget="many2many_tags"/>
-                        </group>
-                        <group string="ข้อมูลติดต่อ">
-                            <field name="contact_name"/>
-                            <field name="working_hours" placeholder="จ.-ศ. 08:30–17:30"/>
-                            <field name="contact_phone"/>
-                            <field name="contact_email"/>
-                            <field name="website_url"/>
-                            <field name="line_url"/>
-                            <field name="facebook_url"/>
-                            <field name="publication_consent"/>
-                            <field name="publication_consent_date" invisible="not publication_consent"/>
-                            <field name="featured"/>
-                            <field name="is_sponsored"/>
-                            <field name="sponsor_start" invisible="not is_sponsored"/>
-                            <field name="sponsor_end" invisible="not is_sponsored"/>
-                            <field name="sequence"/>
-                        </group>
-                    </group>
-                    <notebook><page string="ข้อมูลบริษัท"><field name="description" widget="html"/></page></notebook>
+                    <div class="alert alert-warning" role="alert" invisible="not profile_revision_pending">
+                        มีข้อมูลโปรไฟล์ฉบับใหม่รอตรวจ โปรดเปิดแท็บ “ข้อมูลรอตรวจ” ก่อนอนุมัติ
+                    </div>
+                    <notebook>
+                        <page string="ข้อมูลบริษัทและพื้นที่">
+                            <group>
+                                <group string="รูปภาพบริษัท">
+                                    <field name="cover_image" widget="image" options="{'size': [240, 120]}"/>
+                                    <field name="representative_image" widget="image" options="{'size': [100, 100]}"/>
+                                </group>
+                                <group string="พื้นที่และหมวดหมู่">
+                                    <field name="province_id" options="{'no_create': True}"/>
+                                    <field name="district"/>
+                                    <field name="street"/>
+                                    <field name="zip"/>
+                                    <field name="category_ids" widget="many2many_tags"/>
+                                </group>
+                            </group>
+                            <group string="รายละเอียดบริษัท"><field name="description" widget="html"/></group>
+                            <group string="บัญชีตัวแทน"><field name="user_id" readonly="1"/></group>
+                        </page>
+                        <page string="ช่องทางติดต่อและการแสดงผล">
+                            <group>
+                                <group string="ข้อมูลติดต่อ">
+                                    <field name="contact_name"/>
+                                    <field name="working_hours" placeholder="จ.-ศ. 08:30–17:30"/>
+                                    <field name="contact_phone"/>
+                                    <field name="contact_email"/>
+                                    <field name="website_url"/>
+                                    <field name="line_url"/>
+                                    <field name="facebook_url"/>
+                                </group>
+                                <group string="การแสดงผลบนเว็บไซต์">
+                                    <field name="publication_consent"/>
+                                    <field name="publication_consent_date" invisible="not publication_consent"/>
+                                    <field name="featured" string="แนะนำเป็นรายการเด่น" widget="boolean_toggle"/>
+                                    <field name="is_sponsored" string="ตัวแทนแนะนำ" widget="boolean_toggle"/>
+                                    <field name="sponsor_start" string="เริ่มแนะนำวันที่" invisible="not is_sponsored"/>
+                                    <field name="sponsor_end" string="สิ้นสุดวันที่แนะนำ" invisible="not is_sponsored"/>
+                                    <field name="sequence" string="ลำดับแสดงผล"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="สินค้า" name="vendor_products">
+                            <field name="product_ids" context="{'default_vendor_id': id}">
+                                <list editable="bottom" default_order="sequence, name" decoration-muted="not active">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="image_1920" string="รูปปก" widget="image" optional="show"/>
+                                    <field name="name"/>
+                                    <field name="category_id"/>
+                                    <field name="price"/>
+                                    <field name="image_count" string="จำนวนรูป"/>
+                                    <field name="is_published" string="เผยแพร่" widget="boolean_toggle"/>
+                                    <field name="active" string="ใช้งาน" widget="boolean_toggle"/>
+                                </list>
+                                <form string="สินค้า">
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="image_1920" widget="image"/>
+                                                <field name="name"/>
+                                                <field name="category_id"/>
+                                                <field name="price"/>
+                                            </group>
+                                            <group>
+                                                <field name="image_count"/>
+                                                <field name="is_published"/>
+                                                <field name="active"/>
+                                            </group>
+                                        </group>
+                                        <notebook>
+                                            <page string="รายละเอียด"><field name="description" widget="html"/></page>
+                                            <page string="รูปเพิ่มเติม">
+                                                <div class="text-muted">รวมรูปปกแล้วได้ไม่เกิน 7 รูป</div>
+                                                <field name="image_ids">
+                                                    <list editable="bottom">
+                                                        <field name="sequence" widget="handle"/>
+                                                        <field name="image_1920" widget="image"/>
+                                                    </list>
+                                                </field>
+                                            </page>
+                                        </notebook>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="ข้อมูลรอตรวจ" invisible="not profile_revision_ids">
+                            <field name="profile_revision_ids" readonly="1">
+                                <list>
+                                    <field name="submitted_at"/>
+                                    <field name="name"/>
+                                    <field name="province_id"/>
+                                    <field name="contact_phone"/>
+                                    <button name="action_approve" type="object" string="อนุมัติ" class="btn-primary"/>
+                                    <button name="action_reject" type="object" string="ปฏิเสธ" class="btn-secondary" confirm="ยืนยันลบข้อมูลที่ส่งมา?"/>
+                                </list>
+                                <form string="ข้อมูลที่ส่งมาเพื่อตรวจ">
+                                    <header>
+                                        <button name="action_approve" type="object" string="อนุมัติและใช้ข้อมูลนี้" class="btn-primary"/>
+                                        <button name="action_reject" type="object" string="ปฏิเสธข้อมูล" class="btn-secondary" confirm="ยืนยันลบข้อมูลที่ส่งมา?"/>
+                                    </header>
+                                    <sheet>
+                                        <group>
+                                            <group><field name="name"/><field name="province_id"/><field name="district"/><field name="category_ids" widget="many2many_tags"/></group>
+                                            <group><field name="contact_name"/><field name="working_hours"/><field name="contact_phone"/><field name="contact_email"/><field name="website_url"/><field name="line_url"/><field name="facebook_url"/></group>
+                                        </group>
+                                        <group><field name="description" widget="html"/></group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -69,12 +154,17 @@
         <field name="model">construction.vendor</field>
         <field name="arch" type="xml">
             <search string="ค้นหาตัวแทน">
-                <field name="name"/>
+                <field name="name" string="บริษัท / ตัวแทน" filter_domain="['|', '|', ('name', 'ilike', self), ('contact_phone', 'ilike', self), ('contact_email', 'ilike', self)]"/>
                 <field name="province_id"/>
                 <field name="category_ids"/>
-                <filter name="pending" string="รออนุมัติ" domain="[('is_published', '=', False)]"/>
+                <filter name="needs_review" string="ต้องตรวจ" domain="['|', ('is_published', '=', False), ('profile_revision_pending', '=', True)]"/>
+                <filter name="pending" string="ยังไม่เผยแพร่" domain="[('is_published', '=', False)]"/>
+                <filter name="profile_changes" string="มีข้อมูลแก้ไขรอตรวจ" domain="[('profile_revision_pending', '=', True)]"/>
                 <filter name="published" string="เผยแพร่แล้ว" domain="[('is_published', '=', True)]"/>
-                <group><filter name="group_province" string="จังหวัด" context="{'group_by': 'province_id'}"/></group>
+                <group>
+                    <filter name="group_province" string="จังหวัด" context="{'group_by': 'province_id'}"/>
+                    <filter name="group_category" string="หมวดหมู่" context="{'group_by': 'category_ids'}"/>
+                </group>
             </search>
         </field>
     </record>

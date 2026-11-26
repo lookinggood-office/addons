@@ -19,13 +19,16 @@
             <t t-set="title">จัดการข้อมูลตัวแทน</t>
             <div class="container py-4 construction-directory">
                 <div class="row justify-content-center"><div class="col-lg-9">
+                    <t t-set="profile" t-value="revision or vendor"/>
                     <h1 class="h2 mb-3">จัดการข้อมูลบริษัท / ตัวแทน</h1>
                     <div t-if="request.params.get('saved')" class="alert alert-success" role="status">บันทึกข้อมูลแล้ว</div>
+                    <div t-if="request.params.get('revision_saved')" class="alert alert-info" role="status">ส่งข้อมูลที่แก้ไขให้ทีมงานตรวจแล้ว ข้อมูลเดิมยังแสดงบนเว็บไซต์ระหว่างรอการตรวจ</div>
                     <div t-if="request.params.get('images_saved')" class="alert alert-success" role="status">อัปเดตรูปภาพแล้ว โดยสถานะอนุมัติบริษัทยังคงเดิม</div>
                     <div t-if="request.params.get('image_error')" class="alert alert-danger" role="alert">อัปโหลดรูปไม่สำเร็จ กรุณาตรวจสอบชนิดไฟล์และขนาดไม่เกิน 5 MB</div>
                     <div t-if="error" class="alert alert-danger" role="alert"><t t-esc="error"/></div>
-                    <div t-if="vendor.is_published" class="alert alert-info">ข้อมูลที่แก้ไขจะถูกส่งให้ทีมงานตรวจสอบอีกครั้งก่อนแสดงบนเว็บไซต์</div>
-                    <div t-else="" class="alert alert-secondary">ข้อมูลของคุณกำลังรอทีมงานตรวจสอบและอนุมัติ</div>
+                    <div t-if="vendor.is_published and revision" class="alert alert-warning">มีข้อมูลฉบับแก้ไขรอทีมงานตรวจอยู่ ข้อมูลเดิมยังแสดงบนเว็บไซต์</div>
+                    <div t-elif="vendor.is_published" class="alert alert-info">การแก้ข้อมูลบริษัทจะส่งให้ทีมงานตรวจสอบก่อน ข้อมูลเดิมยังแสดงระหว่างรอ</div>
+                    <div t-else="" class="alert alert-secondary">บัญชีและข้อมูลบริษัทกำลังรออนุมัติ คุณกรอกข้อมูลและเตรียมสินค้าได้ทันที แต่ข้อมูลจะยังไม่แสดงต่อสาธารณะ</div>
                     <div t-if="vendor.image_1920 or vendor.cover_image or vendor.representative_image" class="portal-image-previews mb-4">
                         <div t-if="vendor.image_1920"><span>Logo</span><img t-att-src="'/web/image/construction.vendor/%s/image_1920?v=19.0.14&amp;unique=%s' % (vendor.id, vendor.write_date)" t-att-alt="vendor.name"/></div>
                         <div t-if="vendor.cover_image"><span>Cover</span><img t-att-src="'/web/image/construction.vendor/%s/cover_image?v=19.0.14&amp;unique=%s' % (vendor.id, vendor.write_date)" t-att-alt="vendor.name"/></div>
@@ -46,18 +49,18 @@
                     <form action="/my/vendor/save" method="post" class="vendor-register-form">
                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                         <div class="row g-3">
-                            <div class="col-md-8"><label class="form-label" for="profile-name">ชื่อบริษัท / ตัวแทน *</label><input id="profile-name" class="form-control" name="name" required="required" t-att-value="vendor.name"/></div>
-                            <div class="col-md-4"><label class="form-label" for="profile-province">จังหวัด *</label><select id="profile-province" class="form-select" name="province_id" required="required"><option value="">เลือกจังหวัด</option><t t-foreach="provinces" t-as="province"><option t-att-value="province.id" t-att-selected="vendor.province_id.id == province.id"><t t-esc="province.name"/></option></t></select></div>
-                            <div class="col-md-6"><label class="form-label" for="profile-contact">ผู้ติดต่อ</label><input id="profile-contact" class="form-control" name="contact_name" t-att-value="vendor.contact_name"/></div>
-                            <div class="col-md-6"><label class="form-label" for="profile-hours">เวลาทำการ / เวลาติดต่อ</label><textarea id="profile-hours" class="form-control" name="working_hours" rows="2"><t t-esc="vendor.working_hours"/></textarea></div>
-                            <div class="col-md-6"><label class="form-label" for="profile-phone">เบอร์โทรศัพท์</label><input id="profile-phone" class="form-control" name="contact_phone" type="tel" t-att-value="vendor.contact_phone"/></div>
-                            <div class="col-md-6"><label class="form-label" for="profile-email">อีเมลติดต่อ</label><input id="profile-email" class="form-control" name="contact_email" type="email" t-att-value="vendor.contact_email"/></div>
-                            <div class="col-md-6"><label class="form-label" for="profile-website">เว็บไซต์บริษัท</label><input id="profile-website" class="form-control" name="website_url" type="url" t-att-value="vendor.website_url"/></div>
-                            <div class="col-md-6"><label class="form-label" for="profile-line">ลิงก์ LINE</label><input id="profile-line" class="form-control" name="line_url" type="url" t-att-value="vendor.line_url"/></div>
-                            <div class="col-md-6"><label class="form-label" for="profile-facebook">ลิงก์ Facebook</label><input id="profile-facebook" class="form-control" name="facebook_url" type="url" t-att-value="vendor.facebook_url"/></div>
-                            <div class="col-12"><label class="form-label" for="profile-district">อำเภอ / พื้นที่ให้บริการ</label><input id="profile-district" class="form-control" name="district" t-att-value="vendor.district"/></div>
-                            <div class="col-12"><label class="form-label">หมวดหมู่บริการหรือวัสดุ</label><div class="row g-2"><t t-foreach="categories" t-as="category"><div class="col-md-6"><label class="form-check"><input class="form-check-input" type="checkbox" name="category_ids" t-att-value="category.id" t-att-checked="category in vendor.category_ids"/><span class="form-check-label"><t t-esc="category.name"/></span></label></div></t></div></div>
-                            <div class="col-12"><label class="form-label" for="profile-description">รายละเอียดบริษัท</label><textarea id="profile-description" class="form-control" name="description" rows="5"><t t-esc="vendor.description"/></textarea></div>
+                            <div class="col-md-8"><label class="form-label" for="profile-name">ชื่อบริษัท / ตัวแทน *</label><input id="profile-name" class="form-control" name="name" required="required" t-att-value="profile.name"/></div>
+                            <div class="col-md-4"><label class="form-label" for="profile-province">จังหวัด *</label><select id="profile-province" class="form-select" name="province_id" required="required"><option value="">เลือกจังหวัด</option><t t-foreach="provinces" t-as="province"><option t-att-value="province.id" t-att-selected="profile.province_id.id == province.id"><t t-esc="province.name"/></option></t></select></div>
+                            <div class="col-md-6"><label class="form-label" for="profile-contact">ผู้ติดต่อ</label><input id="profile-contact" class="form-control" name="contact_name" t-att-value="profile.contact_name"/></div>
+                            <div class="col-md-6"><label class="form-label" for="profile-hours">เวลาทำการ / เวลาติดต่อ</label><textarea id="profile-hours" class="form-control" name="working_hours" rows="2"><t t-esc="profile.working_hours"/></textarea></div>
+                            <div class="col-md-6"><label class="form-label" for="profile-phone">เบอร์โทรศัพท์</label><input id="profile-phone" class="form-control" name="contact_phone" type="tel" t-att-value="profile.contact_phone"/></div>
+                            <div class="col-md-6"><label class="form-label" for="profile-email">อีเมลติดต่อ</label><input id="profile-email" class="form-control" name="contact_email" type="email" t-att-value="profile.contact_email"/></div>
+                            <div class="col-md-6"><label class="form-label" for="profile-website">เว็บไซต์บริษัท</label><input id="profile-website" class="form-control" name="website_url" type="url" t-att-value="profile.website_url"/></div>
+                            <div class="col-md-6"><label class="form-label" for="profile-line">ลิงก์ LINE</label><input id="profile-line" class="form-control" name="line_url" type="url" t-att-value="profile.line_url"/></div>
+                            <div class="col-md-6"><label class="form-label" for="profile-facebook">ลิงก์ Facebook</label><input id="profile-facebook" class="form-control" name="facebook_url" type="url" t-att-value="profile.facebook_url"/></div>
+                            <div class="col-12"><label class="form-label" for="profile-district">อำเภอ / พื้นที่ให้บริการ</label><input id="profile-district" class="form-control" name="district" t-att-value="profile.district"/></div>
+                            <div class="col-12"><label class="form-label">หมวดหมู่บริการหรือวัสดุ</label><div class="row g-2"><t t-foreach="categories" t-as="category"><div class="col-md-6"><label class="form-check"><input class="form-check-input" type="checkbox" name="category_ids" t-att-value="category.id" t-att-checked="category in profile.category_ids"/><span class="form-check-label"><t t-esc="category.name"/></span></label></div></t></div></div>
+                            <div class="col-12"><label class="form-label" for="profile-description">รายละเอียดบริษัท</label><textarea id="profile-description" class="form-control" name="description" rows="5"><t t-esc="profile.description"/></textarea></div>
                             <div class="col-12"><button class="btn btn-primary btn-lg" type="submit">บันทึกข้อมูล</button></div>
                         </div>
                     </form>
@@ -75,13 +78,17 @@
                     <span class="directory-eyebrow">PENDING REVIEW</span>
                     <h1 class="h2 mt-2">บัญชีของคุณกำลังรอการอนุมัติ</h1>
                     <p class="lead mb-2"><strong t-esc="vendor.name"/></p>
-                    <p class="text-muted">ทีมงานกำลังตรวจสอบข้อมูลที่ส่งมา ระหว่างนี้คุณเข้าสู่ระบบได้ แต่ยังจัดการโปรไฟล์หรือสินค้าไม่ได้ เมื่ออนุมัติแล้วจึงจะใช้งานส่วนจัดการได้</p>
+                    <p class="text-muted">ทีมงานกำลังตรวจสอบข้อมูลบริษัท คุณสามารถเริ่มจัดการโปรไฟล์และเตรียมสินค้าแบบร่างได้ทันที ข้อมูลจะยังไม่แสดงต่อสาธารณะจนกว่าจะอนุมัติ</p>
                     <div t-if="vendor.image_1920 or vendor.cover_image or vendor.representative_image" class="portal-image-previews mb-4">
                         <div t-if="vendor.image_1920"><span>โลโก้บริษัท</span><img t-att-src="'/web/image/construction.vendor/%s/image_1920?v=19.0.14&amp;unique=%s' % (vendor.id, vendor.write_date)" t-att-alt="vendor.name"/></div>
                         <div t-if="vendor.cover_image"><span>ภาพหน้าปก</span><img t-att-src="'/web/image/construction.vendor/%s/cover_image?v=19.0.14&amp;unique=%s' % (vendor.id, vendor.write_date)" t-att-alt="vendor.name"/></div>
                         <div t-if="vendor.representative_image"><span>ภาพผู้ติดต่อ</span><img t-att-src="'/web/image/construction.vendor/%s/representative_image?v=19.0.14&amp;unique=%s' % (vendor.id, vendor.write_date)" t-att-alt="vendor.contact_name or vendor.name"/></div>
                     </div>
-                    <div t-else="" class="alert alert-light">ยังไม่มีภาพแนบมากับข้อมูล หากต้องการเปลี่ยนภาพ กรุณาติดต่อทีมงานระหว่างรออนุมัติ</div>
+                    <div t-else="" class="alert alert-light">ยังไม่มีภาพแนบ คุณเพิ่มหรือเปลี่ยนภาพได้จากหน้าจัดการข้อมูลบริษัท</div>
+                    <div class="d-flex flex-wrap gap-2 justify-content-center mt-3">
+                        <a href="/my/vendor" class="btn btn-primary">จัดการข้อมูลบริษัท</a>
+                        <a href="/my/vendor/products" class="btn btn-outline-primary">เตรียมสินค้า</a>
+                    </div>
                     <a href="/vendors" class="d-inline-block mt-3">กลับไปหน้าค้นหาตัวแทน</a>
                 </div>
             </div>
@@ -96,8 +103,10 @@
                     <div><h1 class="h2 mb-1">สินค้าที่ต้องการขาย</h1><p class="text-muted mb-0">เพิ่มรูปสินค้า รายละเอียด และราคาเพื่อแสดงในหน้าบริษัท</p></div>
                     <a href="/my/vendor" class="btn btn-outline-primary">กลับไปข้อมูลบริษัท</a>
                 </div>
+                <div t-if="not vendor.is_published" class="alert alert-secondary">สินค้าที่เพิ่มตอนนี้จะเก็บเป็นแบบร่างและยังไม่แสดงต่อสาธารณะ จนกว่าบริษัทจะได้รับอนุมัติ</div>
+                <div t-else="" class="alert alert-info">สินค้าใหม่และการแก้ไขสินค้าจะแสดงบนเว็บไซต์ทันที</div>
                 <div t-if="error" class="alert alert-danger" role="alert"><t t-esc="error"/></div>
-                <div t-if="request.params.get('created') or request.params.get('saved')" class="alert alert-success">บันทึกสินค้าแล้ว สินค้าจะแสดงบนเว็บไซต์ทันทีเมื่อตัวแทนได้รับอนุมัติ</div>
+                <div t-if="request.params.get('created') or request.params.get('saved')" class="alert alert-success">บันทึกสินค้าแล้ว <t t-if="vendor.is_published">สินค้าจะแสดงบนเว็บไซต์ทันที</t><t t-else="">สินค้าเก็บเป็นแบบร่างและจะแสดงเมื่อบริษัทได้รับอนุมัติ</t></div>
                 <form action="/my/vendor/products/create" method="post" enctype="multipart/form-data" class="vendor-register-form mb-4">
                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                     <h2 class="h4">เพิ่มสินค้า</h2>
@@ -107,7 +116,7 @@
                         <div class="col-md-6"><label class="form-label" for="new-product-category">หมวดหมู่สินค้า</label><select id="new-product-category" class="form-select" name="category_id"><option value="">เลือกหมวดหมู่สินค้า</option><t t-foreach="categories" t-as="category"><option t-att-value="category.id"><t t-esc="category.name"/></option></t></select></div>
                         <div class="col-md-6"><label class="form-label" for="new-product-price">ราคา / หมายเหตุราคา</label><input id="new-product-price" class="form-control" name="price" placeholder="เช่น 250 บาท/ชิ้น หรือสอบถามราคา"/></div>
                         <div class="col-12"><label class="form-label" for="new-product-description">รายละเอียดสินค้า</label><textarea id="new-product-description" class="form-control" name="description" rows="3"></textarea></div>
-                        <div class="col-12"><button class="btn btn-primary" type="submit">เพิ่มสินค้าและเผยแพร่</button></div>
+                        <div class="col-12"><button class="btn btn-primary" type="submit">เพิ่มสินค้า</button></div>
                     </div>
                 </form>
                 <h2 class="h4 mb-3">รายการสินค้าของฉัน</h2>
@@ -125,7 +134,7 @@
                             <div class="form-text">เลือกรูปเพื่อเพิ่มในแกลเลอรี รวมแล้วไม่เกิน 7 รูป</div>
                         </div>
                         <div class="col-md-9">
-                            <div class="alert alert-info py-2">สินค้าแสดงบนเว็บไซต์ทันที เมื่อตัวแทนได้รับอนุมัติ</div>
+                            <div class="alert alert-info py-2"><t t-if="vendor.is_published">สินค้ารายการนี้แสดงบนเว็บไซต์แล้ว</t><t t-else="">สินค้านี้เป็นแบบร่างและจะเผยแพร่เมื่อบริษัทได้รับอนุมัติ</t></div>
                             <div class="row g-3">
                                 <div class="col-md-6"><label class="form-label">ชื่อสินค้า *</label><input class="form-control" name="name" required="required" t-att-value="product.name"/></div>
                                 <div class="col-md-6"><label class="form-label">หมวดหมู่สินค้า</label><select class="form-select" name="category_id"><option value="">เลือกหมวดหมู่สินค้า</option><t t-foreach="categories" t-as="category"><option t-att-value="category.id" t-att-selected="product.category_id.id == category.id"><t t-esc="category.name"/></option></t></select></div>

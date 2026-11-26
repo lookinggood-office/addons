@@ -372,13 +372,15 @@ class ConstructionDirectoryController(http.Controller):
         )
         if not vendor:
             return request.not_found()
-        if not vendor.is_published:
-            return request.redirect("/my/vendor/status")
         provinces, categories, _province_id, _category_id = self._filters()
+        revision = request.env["construction.vendor.profile.revision"].search(
+            [("vendor_id", "=", vendor.id)], limit=1
+        )
         return request.render(
             "construction_directory.portal_vendor_profile",
             {"vendor": vendor, "provinces": provinces, "categories": categories, "error": False,
-             "weekdays": WEEKDAYS, "schedule": self._schedule_for_form(vendor.working_schedule)},
+             "revision": revision, "weekdays": WEEKDAYS,
+             "schedule": self._schedule_for_form((revision or vendor).working_schedule)},
         )
 
     @http.route("/my/vendor/status", type="http", auth="user", website=True)
@@ -390,7 +392,7 @@ class ConstructionDirectoryController(http.Controller):
         if not vendor:
             return request.not_found()
         if vendor.is_published:
-            return request.redirect("/my/home")
+            return request.redirect("/my/vendor")
         return request.render(
             "construction_directory.portal_vendor_welcome", {"vendor": vendor}
         )
@@ -405,8 +407,6 @@ class ConstructionDirectoryController(http.Controller):
         )
         if not vendor:
             return request.not_found()
-        if not vendor.is_published:
-            return request.redirect("/my/vendor/status")
         provinces, categories, _province_id, _category_id = self._filters()
         schedule_form, working_schedule, working_hours, schedule_error = self._schedule_from_post(post)
         try:
@@ -448,13 +448,25 @@ class ConstructionDirectoryController(http.Controller):
                 "category_ids": [(6, 0, categories.filtered(lambda item: item.id in category_ids).ids)],
             }
             if values["name"]:
+                if vendor.is_published:
+                    Revision = request.env["construction.vendor.profile.revision"].sudo()
+                    revision = Revision.search([("vendor_id", "=", vendor.id)], limit=1)
+                    revision_values = dict(values, vendor_id=vendor.id, submitted_at=fields.Datetime.now())
+                    if revision:
+                        revision.write(revision_values)
+                    else:
+                        Revision.create(revision_values)
+                    return request.redirect("/my/vendor?revision_saved=1")
                 vendor.write(values)
                 return request.redirect("/my/vendor?saved=1")
             error = "Company or representative name is required."
+        revision = request.env["construction.vendor.profile.revision"].search(
+            [("vendor_id", "=", vendor.id)], limit=1
+        ) if vendor.is_published else request.env["construction.vendor.profile.revision"]
         return request.render(
             "construction_directory.portal_vendor_profile",
             {"vendor": vendor, "provinces": provinces, "categories": categories, "error": error,
-             "weekdays": WEEKDAYS, "schedule": schedule_form},
+             "revision": revision, "weekdays": WEEKDAYS, "schedule": schedule_form},
         )
 
     @http.route(
@@ -467,8 +479,6 @@ class ConstructionDirectoryController(http.Controller):
         )
         if not vendor:
             return request.not_found()
-        if not vendor.is_published:
-            return request.redirect("/my/vendor/status")
         uploads = {
             "image_1920": "image",
             "cover_image": "cover_image",
@@ -494,8 +504,6 @@ class ConstructionDirectoryController(http.Controller):
         )
         if not vendor:
             return request.not_found()
-        if not vendor.is_published:
-            return request.redirect("/my/vendor/status")
         _provinces, categories, _province_id, _category_id = self._filters()
         products = request.env["construction.vendor.product"].search(
             [("vendor_id", "=", vendor.id)], order="sequence, name"
@@ -515,8 +523,6 @@ class ConstructionDirectoryController(http.Controller):
         )
         if not vendor:
             return request.not_found()
-        if not vendor.is_published:
-            return request.redirect("/my/vendor/status")
         image_data, image_error = self._read_multiple_image_uploads("images")
         name = (post.get("name") or "").strip()
         if not name:
@@ -541,7 +547,7 @@ class ConstructionDirectoryController(http.Controller):
                     "image_1920": image_data[0],
                     "description": post.get("description") or "",
                     "price": (post.get("price") or "").strip(),
-                    "is_published": True,
+                    "is_published": vendor.is_published,
                 }
             )
             if len(image_data) > 1:
@@ -571,8 +577,6 @@ class ConstructionDirectoryController(http.Controller):
         )
         if not vendor:
             return request.not_found()
-        if not vendor.is_published:
-            return request.redirect("/my/vendor/status")
         product = request.env["construction.vendor.product"].search(
             [("id", "=", product_id), ("vendor_id", "=", vendor.id)], limit=1
         )
