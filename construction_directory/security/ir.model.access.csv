@@ -13,3 +13,4 @@ access_construction_vendor_category_public,construction.vendor.category public,m
 access_construction_vendor_category_portal,construction.vendor.category portal,model_construction_vendor_category,base.group_portal,1,0,0,0
 access_construction_vendor_profile_revision_user,construction.vendor.profile.revision user,model_construction_vendor_profile_revision,base.group_user,1,1,1,1
 access_construction_vendor_profile_revision_portal,construction.vendor.profile.revision portal,model_construction_vendor_profile_revision,base.group_portal,1,1,1,0
+access_construction_directory_search_group_user,construction.directory.search.group user,model_construction_directory_search_group,base.group_user,1,1,1,1

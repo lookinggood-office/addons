@@ -2,14 +2,17 @@
 <odoo>
     <record id="category_house_design" model="construction.vendor.category">
         <field name="name">ออกแบบบ้าน</field>
+        <field name="category_type">design</field>
         <field name="sequence">5</field>
     </record>
     <record id="category_interior_design" model="construction.vendor.category">
         <field name="name">ออกแบบภายใน</field>
+        <field name="category_type">design</field>
         <field name="sequence">6</field>
     </record>
     <record id="category_contractor" model="construction.vendor.category">
         <field name="name">รับเหมาก่อสร้าง</field>
+        <field name="category_type">contractor</field>
         <field name="sequence">7</field>
     </record>
 </odoo>

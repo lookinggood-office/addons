@@ -4,21 +4,39 @@
         <t t-call="website.layout">
             <t t-set="title">ค้นหาบริษัทด้านก่อสร้างและวัสดุ</t>
             <div id="wrap" class="oe_structure construction-directory">
-                <section t-attf-class="directory-hero py-5 py-lg-6 #{'directory-home-hero' if category_landing else ''}">
+                <section t-attf-class="directory-hero py-5 py-lg-6 #{'directory-home-hero' if category_landing or type_landing else ''}">
                     <div class="container py-4">
                         <div class="row align-items-center g-5">
-                            <div t-att-class="'col-lg-12' if category_landing else 'col-lg-7'">
+                            <div t-att-class="'col-lg-12' if category_landing or type_landing else 'col-lg-7'">
                                 <span class="directory-eyebrow">COMPANY DIRECTORY • THAILAND</span>
-                                <h1 class="display-4 fw-bold mt-3">ค้นหาบริษัทก่อสร้าง<br/><span class="directory-accent">และวัสดุใกล้คุณ</span></h1>
-                                <p class="lead mt-3 mb-0"><t t-if="category_landing">เลือกหมวดหมู่ที่สนใจก่อน แล้วค่อยค้นหาบริษัทหรือกรองตามพื้นที่</t><t t-else="">ค้นหาบริษัทและตัวแทนตามจังหวัดและประเภทบริการหรือสินค้า</t></p>
+                                <h1 t-if="category_landing" class="display-4 fw-bold mt-3">ค้นหาบริษัทก่อสร้าง<br/><span class="directory-accent">และวัสดุใกล้คุณ</span></h1>
+                                <h1 t-elif="type_landing" class="display-4 fw-bold mt-3">เลือกหมวดหมู่<br/><span class="directory-accent"><t t-esc="selected_category_type_label"/></span></h1>
+                                <h1 t-else="" class="display-4 fw-bold mt-3">ค้นหาบริษัท<br/><span class="directory-accent">ตามหมวดหมู่ที่เลือก</span></h1>
+                                <p class="lead mt-3 mb-0"><t t-if="category_landing">เลือกประเภทที่ต้องการค้นหาก่อน</t><t t-elif="type_landing">เลือกหมวดหมู่เพื่อดูบริษัทและตัวแทนในกลุ่มนี้</t><t t-else="">ค้นหาตามชื่อบริษัท หมวดหมู่ และจังหวัด</t></p>
                             </div>
-                            <div t-if="not category_landing" class="col-lg-5">
+                            <div t-if="not category_landing and not type_landing" class="col-lg-5">
                                 <div class="directory-search-card shadow-lg">
                                     <h2 class="h4 mb-3">ค้นหาบริษัทและตัวแทน</h2>
                                     <form action="/vendors" method="get" class="row g-3">
+                                        <input t-if="selected_category_type" type="hidden" name="category_type" t-att-value="selected_category_type"/>
+                                        <div t-if="selected_category_type" class="col-12">
+                                            <span class="form-label d-block">ประเภทที่เลือก</span>
+                                            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+                                                <span class="badge rounded-pill text-bg-light px-3 py-2"><t t-esc="selected_category_type_label"/></span>
+                                                <a href="/vendors" class="small">เปลี่ยนประเภท</a>
+                                            </div>
+                                        </div>
                                         <div class="col-12"><label class="form-label" for="vendor-search">บริการ สินค้า หรือชื่อบริษัท</label><input id="vendor-search" type="search" name="q" class="form-control form-control-lg" t-att-value="search_term" placeholder="เช่น ออกแบบบ้าน เหล็ก ปูน"/></div>
                                         <div class="col-12"><label class="form-label" for="province-filter">จังหวัด</label><select id="province-filter" name="province_id" class="form-select form-select-lg"><option value="">ทุกจังหวัด</option><t t-foreach="provinces" t-as="province"><option t-att-value="province.id" t-att-selected="province.id == selected_province_id"><t t-esc="province.name"/></option></t></select></div>
-                                        <div class="col-12"><label class="form-label" for="category-filter">หมวดหมู่</label><select id="category-filter" name="category_id" class="form-select form-select-lg"><option value="">ทุกหมวดหมู่</option><t t-foreach="categories" t-as="category"><option t-att-value="category.id" t-att-selected="category.id == selected_category_id"><t t-esc="category.name"/></option></t></select></div>
+                                        <div t-if="selected_category" class="col-12">
+                                            <span class="form-label d-block">หมวดหมู่ที่เลือก</span>
+                                            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+                                                <span class="badge rounded-pill text-bg-light px-3 py-2"><t t-esc="selected_category.name"/></span>
+                                                 <a t-att-href="'/vendors?category_type=%s' % selected_category_type if selected_category_type else '/vendors'" class="small">เปลี่ยนหมวดหมู่</a>
+                                            </div>
+                                            <input type="hidden" name="category_id" t-att-value="selected_category.id"/>
+                                        </div>
+                                        <div t-else="" class="col-12"><label class="form-label" for="category-filter">หมวดหมู่</label><select id="category-filter" name="category_id" class="form-select form-select-lg"><option value="">ทุกหมวดหมู่</option><t t-foreach="categories" t-as="category"><option t-att-value="category.id"><t t-esc="category.name"/></option></t></select></div>
                                         <div class="col-12 d-grid"><button class="btn btn-primary btn-lg" type="submit">ค้นหา</button></div>
                                     </form>
                                 </div>
@@ -26,22 +44,44 @@
                         </div>
                     </div>
                 </section>
-                <section t-if="category_landing" class="container category-entry-section py-5">
-                    <div class="mb-4"><span class="directory-eyebrow">BROWSE BY CATEGORY</span><h2 class="h2 mb-1 mt-1">เลือกหมวดหมู่</h2><p class="text-muted mb-0">เลือกดูบริษัทตามบริการหรือวัสดุที่ต้องการ</p></div>
-                    <div class="row g-3 g-lg-4">
+                <section t-if="type_landing" class="container category-entry-section py-5">
+                    <div class="mb-4">
+                        <span class="directory-eyebrow">BROWSE CATEGORIES</span>
+                        <h2 class="h2 mb-1 mt-1">หมวดหมู่<t t-esc="selected_category_type_label"/></h2>
+                        <p class="text-muted mb-0">เลือกหมวดหมู่ก่อน เพื่อดูบริษัทและตัวแทนที่เกี่ยวข้อง</p>
+                    </div>
+                    <a href="/vendors" class="category-back-link mb-4"><i class="fa fa-arrow-left me-2"/>กลับไปเลือกประเภท</a>
+                    <div t-if="categories" class="row g-3 g-lg-4 mt-1">
                         <t t-foreach="categories" t-as="category">
                             <div class="col-6 col-lg-3">
-                                <a class="category-entry-card" t-att-href="'/vendors?category_id=%s' % category.id">
+                                <a class="category-entry-card" t-att-href="'/vendors?category_type=%s&amp;category_id=%s' % (selected_category_type, category.id)">
                                     <img t-if="category.image_1920" class="category-entry-image" t-att-src="'/web/image/construction.vendor.category/%s/image_1920' % category.id" t-att-alt="category.name" loading="lazy"/>
-                                    <span class="category-entry-icon"><i class="fa fa-building-o"/></span>
+                                    <span t-else="" class="category-entry-icon"><i t-attf-class="fa #{'fa-pencil-square-o' if selected_category_type == 'design' else 'fa-wrench' if selected_category_type == 'contractor' else 'fa-cubes'}"/></span>
                                     <span class="category-entry-name"><t t-esc="category.name"/></span>
                                     <span class="category-entry-link">ดูบริษัท <i class="fa fa-arrow-right ms-1"/></span>
                                 </a>
                             </div>
                         </t>
                     </div>
+                    <div t-else="" class="alert alert-light mt-3">ขณะนี้ยังไม่มีหมวดหมู่ในประเภทนี้</div>
                 </section>
-                <section t-if="sponsored_vendors and not category_landing" class="recommended-strip py-5">
+                <section t-if="category_landing" class="container category-entry-section py-5">
+                    <div class="mb-4"><span class="directory-eyebrow">BROWSE DIRECTORY</span><h2 class="h2 mb-1 mt-1">เลือกสิ่งที่ต้องการค้นหา</h2><p class="text-muted mb-0">เลือกประเภทก่อน แล้วค่อยกรองบริการหรือหมวดหมู่สินค้า</p></div>
+                    <div class="row g-3 g-lg-4">
+                        <t t-foreach="directory_groups" t-as="directory_group">
+                            <div class="col-12 col-md-4">
+                                <a class="category-entry-card directory-type-card" t-att-href="'/vendors?category_type=%s' % directory_group.category_type">
+                                    <img t-if="directory_group.image_1920" class="category-entry-image" t-att-src="'/web/image/construction.directory.search.group/%s/image_1920' % directory_group.id" t-att-alt="directory_group.name" loading="lazy"/>
+                                    <span t-else="" class="category-entry-icon"><i class="fa fa-building-o"/></span>
+                                    <span class="category-entry-name"><t t-esc="directory_group.name"/></span>
+                                    <span class="text-muted"><t t-esc="directory_group.description"/></span>
+                                    <span class="category-entry-link">เลือกดู <i class="fa fa-arrow-right ms-1"/></span>
+                                </a>
+                            </div>
+                        </t>
+                    </div>
+                </section>
+                <section t-if="sponsored_vendors and not category_landing and not type_landing" class="recommended-strip py-5">
                     <div class="container">
                         <div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-4">
                             <div><span class="directory-eyebrow">RECOMMENDED</span><h2 class="h2 mb-0 mt-1">ตัวแทนแนะนำ</h2></div>
@@ -69,12 +109,12 @@
                         </div>
                     </div>
                 </section>
-                <section t-if="not category_landing" class="container py-5">
+                <section t-if="not category_landing and not type_landing" class="container py-5">
                     <div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-4">
                         <div><span class="directory-eyebrow text-uppercase">DIRECTORY</span><h2 class="h2 mb-0 mt-1"><t t-if="selected_category_id">ผลการค้นหาในหมวดหมู่</t><t t-else="">บริษัทและตัวแทน</t></h2></div>
                         <a href="/vendors/register" class="btn btn-outline-primary">ลงทะเบียนเป็นตัวแทน</a>
                     </div>
-                    <a t-if="selected_category_id" href="/vendors" class="category-back-link mb-4"><i class="fa fa-arrow-left me-2"/>กลับไปเลือกหมวดหมู่</a>
+                    <a t-if="selected_category_id" t-att-href="'/vendors?category_type=%s' % selected_category_type if selected_category_type else '/vendors'" class="category-back-link mb-4"><i class="fa fa-arrow-left me-2"/>กลับไปเลือกหมวดหมู่</a>
                     <t t-if="sponsored_vendors or vendors">
                       <t t-if="vendors">
                         <div class="row g-4">

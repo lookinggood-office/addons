@@ -1,5 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <template id="warehouse_site_font" inherit_id="website.layout" name="Warehouse website typography">
+        <xpath expr="//head" position="inside">
+            <link rel="preconnect" href="https://fonts.googleapis.com"/>
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+            <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+        </xpath>
+    </template>
+    <template id="warehouse_footer" inherit_id="website.footer_custom" name="WAREHOUSE CO directory footer">
+        <xpath expr="//div[@id='footer']" position="replace">
+            <div id="footer" class="oe_structure oe_structure_solo warehouse-footer" t-if="not no_footer">
+                <section class="warehouse-footer-main py-5">
+                    <div class="container">
+                        <div class="row g-4 g-lg-5">
+                            <div class="col-12 col-lg-5">
+                                <a href="/" class="warehouse-footer-brand">
+                                    <img t-if="website.logo" t-att-src="'/web/image/website/%s/logo' % website.id" t-att-alt="website.name" loading="lazy"/>
+                                    <span t-else="" t-esc="website.name"/>
+                                </a>
+                                <p class="warehouse-footer-description mt-3 mb-0">ค้นหาวัสดุก่อสร้าง บริษัทออกแบบ และผู้รับเหมาได้ในที่เดียว</p>
+                            </div>
+                            <div class="col-6 col-lg-3">
+                                <h2 class="warehouse-footer-heading">ค้นหาบริษัท</h2>
+                                <ul class="warehouse-footer-links">
+                                    <li><a href="/vendors?category_type=material">วัสดุก่อสร้าง</a></li>
+                                    <li><a href="/vendors?category_type=design">บริษัทออกแบบ</a></li>
+                                    <li><a href="/vendors?category_type=contractor">ผู้รับเหมา</a></li>
+                                    <li><a href="/vendors/register">ลงทะเบียนเป็นตัวแทน</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-6 col-lg-4">
+                                <h2 class="warehouse-footer-heading">ติดต่อเรา</h2>
+                                <ul class="warehouse-footer-links">
+                                    <li><a href="/contactus"><i class="fa fa-envelope-o me-2"/>ส่งข้อความถึงทีมงาน</a></li>
+                                    <li t-if="website.social_facebook"><a t-att-href="website.social_facebook" target="_blank" rel="noopener noreferrer"><i class="fa fa-facebook me-2"/>Facebook</a></li>
+                                    <li t-if="website.company_id.phone"><a t-att-href="'tel:%s' % website.company_id.phone"><i class="fa fa-phone me-2"/><t t-esc="website.company_id.phone"/></a></li>
+                                    <li t-if="website.company_id.email"><a t-att-href="'mailto:%s' % website.company_id.email"><i class="fa fa-at me-2"/><t t-esc="website.company_id.email"/></a></li>
+                                    <li><a href="/privacy-notice">ประกาศความเป็นส่วนตัว</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="warehouse-footer-bottom">
+                    <div class="container py-3 d-flex flex-column flex-sm-row justify-content-between gap-2">
+                        <span>Copyright © <t t-esc="website.name"/></span>
+                        <a href="/privacy-notice">ความเป็นส่วนตัว</a>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+    <template id="warehouse_remove_default_footer_copyright" inherit_id="website.layout" name="Remove placeholder footer copyright">
+        <xpath expr="//div[hasclass('o_footer_copyright')]" position="replace"/>
+    </template>
     <template id="site_header_phone_cleanup" inherit_id="website.header_text_element" name="Hide placeholder phone number">
         <xpath expr="//a[starts-with(@href, 'tel:+1 555-555-5556')]" position="replace"/>
     </template>
@@ -27,8 +81,5 @@
                 </button>
             </li>
         </xpath>
-    </template>
-    <template id="remove_odoo_brand_promotion" inherit_id="website.layout" name="Remove Odoo footer promotion">
-        <xpath expr="//t[@t-call='web.brand_promotion']/.." position="replace"/>
     </template>
 </odoo>

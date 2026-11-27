@@ -140,11 +140,36 @@ class ConstructionDirectoryController(http.Controller):
         return provinces, categories, selected_province_id, selected_category_id
 
     @http.route("/vendors", type="http", auth="public", website=True, sitemap=True)
-    def vendors(self, q=None, province_id=None, category_id=None, **kwargs):
+    def vendors(self, q=None, province_id=None, category_id=None, category_type=None, **kwargs):
         provinces, categories, selected_province_id, selected_category_id = self._filters(
             province_id, category_id
         )
+        directory_groups = request.env["construction.directory.search.group"].sudo().search(
+            [("active", "=", True)], order="sequence, id"
+        )
+        category_type_labels = {
+            group.category_type: group.name for group in directory_groups
+        }
+        if category_type not in category_type_labels:
+            category_type = ""
+        selected_group = directory_groups.filtered(
+            lambda group: group.category_type == category_type
+        )[:1]
+        visible_categories = categories.filtered(
+            lambda category: not category_type or category.category_type == category_type
+        )
+        selected_category = visible_categories.filtered(
+            lambda category: category.id == selected_category_id
+        )[:1]
+        if not selected_category:
+            selected_category_id = 0
         domain = [("is_published", "=", True)]
+        if category_type:
+            domain += [
+                "|",
+                ("category_ids.category_type", "=", category_type),
+                ("public_product_ids.category_id.category_type", "=", category_type),
+            ]
         if q:
             term = q.strip()
             if term:
@@ -166,7 +191,10 @@ class ConstructionDirectoryController(http.Controller):
                 ("public_product_ids.category_id", "=", selected_category_id),
             ]
         category_landing = not (
-            (q or "").strip() or selected_province_id or selected_category_id
+            (q or "").strip() or selected_province_id or selected_category_id or category_type
+        )
+        type_landing = bool(
+            category_type and not (q or "").strip() and not selected_province_id and not selected_category_id
         )
         vendor_model = request.env["construction.vendor"].sudo()
         today = fields.Date.context_today(request.env.user)
@@ -192,11 +220,17 @@ class ConstructionDirectoryController(http.Controller):
                 "vendors": vendors,
                 "sponsored_vendors": sponsored_vendors,
                 "provinces": provinces,
-                "categories": categories,
+                "categories": visible_categories,
+                "directory_groups": directory_groups,
+                "selected_directory_group": selected_group,
+                "selected_category": selected_category,
                 "selected_province_id": selected_province_id,
                 "selected_category_id": selected_category_id,
+                "selected_category_type": category_type,
+                "selected_category_type_label": category_type_labels.get(category_type, ""),
                 "search_term": q or "",
                 "category_landing": category_landing,
+                "type_landing": type_landing,
             },
         )
 

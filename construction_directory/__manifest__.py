@@ -1,7 +1,7 @@
 {
     "name": "Construction and Design Directory",
     "summary": "Find construction, design, and material representatives by province",
-    "version": "19.0.31.0.0",
+    "version": "19.0.45.0.0",
     "category": "Website",
     "license": "LGPL-3",
     "author": "LookingGood Tech",
@@ -12,6 +12,7 @@
     "data": [
         "security/ir.model.access.csv",
         "security/vendor_rules.xml",
+        "data/directory_search_groups.xml",
         "data/vendor_categories.xml",
         "data/category_images.xml",
         "data/service_categories.xml",

@@ -11,9 +11,11 @@
     --directory-stone: var(--warehouse-stone);
     --directory-beige: var(--warehouse-beige);
     --directory-ivory: var(--warehouse-ivory);
-    font-family: "Noto Sans Thai", "Sarabun", "Leelawadee UI", Tahoma, sans-serif;
+    font-family: "Mitr", "Leelawadee UI", Tahoma, sans-serif;
     letter-spacing: .005em;
 }
+#wrapwrap { font-family: "Mitr", "Leelawadee UI", Tahoma, sans-serif; }
+.construction-directory h1, .construction-directory h2, .construction-directory h3 { font-family: "Mitr", "Leelawadee UI", Tahoma, sans-serif; font-weight: 500; }
 
 .directory-hero {
     color: var(--directory-ink);
@@ -22,6 +24,16 @@
 }
 .directory-hero .lead { color: #62625f; max-width: 42rem; }
 .directory-home-hero { min-height: 28rem; display: flex; align-items: center; background-image: linear-gradient(90deg, #fafaf8 0%, #fafaf8ed 38%, #fafaf888 63%, #fafaf800 100%), url('/construction_directory/static/description/sample_photos/tiles.jpg'); background-position: center; background-size: cover; }
+.warehouse-footer { background: var(--warehouse-surface, #fafaf8); color: var(--warehouse-text, #292927); border-top: 1px solid var(--warehouse-border, #e8e6df); }
+.warehouse-footer-main { background: var(--warehouse-surface, #fafaf8); }
+.warehouse-footer-brand { display: inline-flex; align-items: center; min-height: 3rem; color: inherit; font-size: 1.2rem; font-weight: 600; text-decoration: none; }
+.warehouse-footer-brand img { width: auto; max-width: 180px; max-height: 52px; object-fit: contain; }
+.warehouse-footer-description { max-width: 24rem; color: var(--warehouse-muted, #62625f); line-height: 1.8; }
+.warehouse-footer-heading { margin-bottom: 1rem; font-size: 1rem; font-weight: 600; }
+.warehouse-footer-links { display: grid; gap: .7rem; margin: 0; padding: 0; list-style: none; }
+.warehouse-footer-links a, .warehouse-footer-bottom a { color: inherit; text-decoration: none; }
+.warehouse-footer-links a:hover, .warehouse-footer-bottom a:hover { text-decoration: underline; text-underline-offset: .2em; }
+.warehouse-footer-bottom { border-top: 1px solid var(--warehouse-border, #e8e6df); color: var(--warehouse-muted, #62625f); font-size: .85rem; }
 .navbar-brand img { width: auto !important; max-width: 160px; max-height: 60px; }
 .navbar-brand span[role="img"] { display: inline-flex; align-items: center; }
 .navbar-brand span[role="img"] img { display: block; }
@@ -41,6 +53,7 @@
 .category-entry-icon { width: 2.75rem; height: 2.75rem; display: grid; place-items: center; border-radius: 1rem; background: var(--directory-beige); color: var(--directory-charcoal); font-size: 1.1rem; }
 .category-entry-name { font-size: 1.05rem; font-weight: 700; }
 .category-entry-link, .category-back-link { color: var(--directory-charcoal); font-size: .9rem; text-decoration: none; }
+.directory-type-card { min-height: 13rem; }
 .category-back-link { display: inline-block; }
 .recommended-strip { background: var(--directory-beige); border-block: 1px solid #d9d6ce; }
 .vendor-card-recommended { border: 1px solid #d1cec6; box-shadow: none; }
@@ -84,6 +97,8 @@
 /* Photo led directory cards inspired by the supplied materials catalogue reference. */
 .category-entry-card { position: relative; overflow: hidden; min-height: 15rem; padding-top: .8rem; }
 .category-entry-image { width: calc(100% + 2.4rem); height: 9rem; margin: -.8rem -1.2rem .25rem; object-fit: cover; border-radius: 1rem 1rem .5rem .5rem; }
+.directory-type-card { min-height: 13rem; }
+.directory-type-card .category-entry-image { height: 7rem; }
 .category-entry-icon { display: none; }
 .category-entry-link { margin-top: auto; }
 .vendor-card-top { overflow: hidden; }

@@ -4,12 +4,45 @@ from odoo import api, fields, models
 from odoo.exceptions import AccessError, ValidationError
 
 
+DIRECTORY_TYPE_SELECTION = [
+    ("material", "วัสดุก่อสร้าง"),
+    ("design", "บริษัทออกแบบ"),
+    ("contractor", "ผู้รับเหมา"),
+]
+
+
+class ConstructionDirectorySearchGroup(models.Model):
+    _name = "construction.directory.search.group"
+    _description = "Directory Search Group"
+    _order = "sequence, id"
+
+    category_type = fields.Selection(
+        DIRECTORY_TYPE_SELECTION, required=True, index=True, string="ประเภทกลุ่มค้นหา"
+    )
+    name = fields.Char(required=True, translate=True, string="ชื่อที่แสดง")
+    description = fields.Char(translate=True, string="คำอธิบายบนเว็บไซต์")
+    image_1920 = fields.Image(string="รูปปกกลุ่ม", max_width=1920, max_height=1920)
+    sequence = fields.Integer(default=10)
+    active = fields.Boolean(default=True)
+
+    _category_type_unique = models.Constraint(
+        "UNIQUE(category_type)", "There can only be one record per directory search group."
+    )
+
+
 class ConstructionVendorCategory(models.Model):
     _name = "construction.vendor.category"
     _description = "Construction Material Category"
     _order = "sequence, name"
 
     name = fields.Char(required=True, translate=True)
+    category_type = fields.Selection(
+        DIRECTORY_TYPE_SELECTION,
+        string="ประเภทหมวดหมู่",
+        required=True,
+        default="material",
+        index=True,
+    )
     image_1920 = fields.Image(string="Category cover", max_width=1920, max_height=1920)
     sequence = fields.Integer(default=10)
     active = fields.Boolean(default=True)

@@ -201,26 +201,89 @@
     <record id="construction_vendor_product_action" model="ir.actions.act_window">
         <field name="name">สินค้าตัวแทน</field><field name="res_model">construction.vendor.product</field><field name="view_mode">list,form</field>
     </record>
+    <record id="construction_directory_search_group_view_list" model="ir.ui.view">
+        <field name="name">construction.directory.search.group.list</field>
+        <field name="model">construction.directory.search.group</field>
+        <field name="arch" type="xml">
+            <list string="กลุ่มค้นหาหน้าเว็บไซต์">
+                <field name="sequence" widget="handle"/>
+                <field name="image_1920" string="รูปปก" widget="image" options="{'size': [72, 48]}" optional="show"/>
+                <field name="name" string="ชื่อกลุ่ม"/>
+                <field name="category_type" string="กลุ่มระบบ"/>
+                <field name="active" string="แสดงบนเว็บไซต์" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="construction_directory_search_group_view_form" model="ir.ui.view">
+        <field name="name">construction.directory.search.group.form</field>
+        <field name="model">construction.directory.search.group</field>
+        <field name="arch" type="xml">
+            <form string="กลุ่มค้นหาหน้าเว็บไซต์">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" string="ชื่อกลุ่มที่แสดง"/>
+                            <field name="category_type" string="ประเภทกลุ่ม" readonly="1"/>
+                            <field name="sequence" string="ลำดับแสดงผล"/>
+                            <field name="active" string="แสดงบนเว็บไซต์"/>
+                            <field name="description" string="คำอธิบายสั้น ๆ"/>
+                        </group>
+                        <group string="รูปภาพหน้าปกกลุ่ม">
+                            <field name="image_1920" string="รูปหน้าปก" widget="image" options="{'size': [320, 180]}"/>
+                            <div class="text-muted">รูปนี้แสดงในการ์ดเลือกกลุ่มบนหน้าแรกของเว็บไซต์</div>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="construction_directory_search_group_action" model="ir.actions.act_window">
+        <field name="name">กลุ่มค้นหาหน้าเว็บไซต์</field>
+        <field name="res_model">construction.directory.search.group</field>
+        <field name="view_mode">list,form</field>
+    </record>
     <record id="construction_vendor_category_view_list" model="ir.ui.view">
         <field name="name">construction.vendor.category.list</field>
         <field name="model">construction.vendor.category</field>
         <field name="arch" type="xml">
-            <list string="หมวดหมู่สินค้า"><field name="sequence" widget="handle"/><field name="name"/><field name="active" widget="boolean_toggle"/></list>
+            <list string="จัดการหมวดหมู่">
+                <field name="sequence" widget="handle"/>
+                <field name="image_1920" string="รูปปก" widget="image" optional="show"/>
+                <field name="name"/>
+                <field name="category_type" string="กลุ่ม"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
         </field>
     </record>
     <record id="construction_vendor_category_view_form" model="ir.ui.view">
         <field name="name">construction.vendor.category.form</field>
         <field name="model">construction.vendor.category</field>
         <field name="arch" type="xml">
-            <form string="หมวดหมู่สินค้า"><sheet><group><field name="name"/><field name="sequence"/><field name="active"/></group></sheet></form>
+            <form string="จัดการหมวดหมู่">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" string="ชื่อหมวดหมู่"/>
+                            <field name="category_type" string="กลุ่มที่ใช้ค้นหา"/>
+                            <field name="sequence" string="ลำดับแสดงผล"/>
+                            <field name="active" string="เปิดใช้งาน"/>
+                        </group>
+                        <group string="รูปภาพหมวดหมู่">
+                            <field name="image_1920" string="รูปปกหมวดหมู่" widget="image" options="{'size': [240, 160]}"/>
+                            <div class="text-muted">รูปนี้จะแสดงเป็นภาพปกของหมวดหมู่บนหน้าเว็บไซต์</div>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
         </field>
     </record>
     <record id="construction_vendor_category_action" model="ir.actions.act_window">
-        <field name="name">หมวดหมู่สินค้า</field>
+        <field name="name">จัดการหมวดหมู่</field>
         <field name="res_model">construction.vendor.category</field>
         <field name="view_mode">list,form</field>
     </record>
     <menuitem id="construction_directory_menu_root" name="จัดการตัวแทนวัสดุ" sequence="55"/>
     <menuitem id="construction_vendor_menu" name="ตัวแทนวัสดุก่อสร้าง" parent="construction_directory_menu_root" action="construction_vendor_action" sequence="10"/>
-    <menuitem id="construction_vendor_category_menu" name="หมวดหมู่สินค้า" parent="construction_directory_menu_root" action="construction_vendor_category_action" sequence="20"/>
+    <menuitem id="construction_directory_search_group_menu" name="กลุ่มค้นหาเว็บไซต์" parent="construction_directory_menu_root" action="construction_directory_search_group_action" sequence="15"/>
+    <menuitem id="construction_vendor_category_menu" name="จัดการหมวดหมู่" parent="construction_directory_menu_root" action="construction_vendor_category_action" sequence="20"/>
 </odoo>
